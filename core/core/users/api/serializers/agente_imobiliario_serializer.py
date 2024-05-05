@@ -20,7 +20,6 @@ class AgenteImobiliarioProfilePostSerializer(serializers.ModelSerializer):
         user_data['user_type'] = 'agente'
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid(raise_exception=True):
-            logger.info("passei na validação, criando usuário")
             user = user_serializer.save()
         try:
             agente_profile = AgenteImobiliarioProfile.objects.create(user=user, **validated_data)
