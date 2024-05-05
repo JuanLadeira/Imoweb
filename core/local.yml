@@ -1,8 +1,7 @@
-version: '3'
 
 volumes:
-  core_local_postgres_data: {}
-  core_local_postgres_data_backups: {}
+  core_local_postgres_data_dois: {}
+  core_local_postgres_data_dois_backups: {}
 
 services:
   django: &django
@@ -30,8 +29,8 @@ services:
     image: core_production_postgres
     container_name: core_local_postgres
     volumes:
-      - core_local_postgres_data:/var/lib/postgresql/data
-      - core_local_postgres_data_backups:/backups
+      - core_local_postgres_data_dois:/var/lib/postgresql/data
+      - core_local_postgres_data_dois_backups:/backups
     env_file:
       - ./.envs/.local/.postgres
 

@@ -8,7 +8,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from core.users.models import User
 
-from .serializers import UserSerializer
+from ..serializers.user_serializer import UserSerializer
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
@@ -17,7 +17,6 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
     lookup_field = "username"
 
     def get_queryset(self, *args, **kwargs):
-        assert isinstance(self.request.user.id, int)
         return self.queryset.filter(id=self.request.user.id)
 
     @action(detail=False)

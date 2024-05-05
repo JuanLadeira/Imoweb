@@ -175,3 +175,4 @@ force-single-line = true
 build = "sudo docker compose -f local.yml up --build"
 up = "sudo docker compose -f local.yml up "
 down = "sudo docker compose -f local.yml down"
+reset_db = "sudo docker compose -f local.yml run --rm django python manage.py reset_db && sudo docker compose -f local.yml run --rm django python manage.py makemigrations && sudo docker compose -f local.yml up "
