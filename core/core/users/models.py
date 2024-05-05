@@ -23,15 +23,6 @@ class User(AbstractUser):
     first_name = None  # type: ignore[assignment]
     last_name = None  # type: ignore[assignment]
 
-    def get_absolute_url(self) -> str:
-        """Get URL for user's detail view.
-
-        Returns:
-            str: URL for user detail.
-
-        """
-        return reverse("users:detail", kwargs={"username": self.username})
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -39,13 +30,13 @@ class UserProfile(models.Model):
     endereco = models.CharField(max_length=255, null=True, blank=True)
 
 class ClienteProfile(models.Model):
-    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    user= models.OneToOneField(User, on_delete=models.CASCADE)
     preferencias_de_busca = models.JSONField()
 
 class AgenteImobiliarioProfile(models.Model):
-    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # imoveis_gerenciados = models.ManyToManyField(Imovel)
 
 class InquilinoProfile(models.Model):
-    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # contrato = models.ForeignKey(Contrato, on_delete=models.CASCADE)

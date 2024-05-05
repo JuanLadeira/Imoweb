@@ -24,10 +24,10 @@ class InquilinoProfileViewSet(viewsets.ModelViewSet):
 
     item_name = "Inquilino"
     plural_item_name = "Inquilinos"
-    permission_classes = [
-        permissions.IsAuthenticated,
-        permissions.DjangoModelPermissions,
-    ]
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    #     permissions.DjangoModelPermissions,
+    # ]
 
     def get_queryset(self):
         queryset = InquilinoProfile.objects.all()

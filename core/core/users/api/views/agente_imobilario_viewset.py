@@ -24,10 +24,10 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
 
     item_name = "Agente Imobiliario"
     plural_item_name = "Agentes imobiliarios"
-    permission_classes = [
-        permissions.IsAuthenticated,
-        permissions.DjangoModelPermissions,
-    ]
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    #     permissions.DjangoModelPermissions,
+    # ]
 
     def get_queryset(self):
         queryset = AgenteImobiliarioProfile.objects.all()

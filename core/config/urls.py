@@ -11,9 +11,6 @@ from drf_spectacular.views import SpectacularSwaggerView
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
-    # User management
-    path("users/", include("core.users.urls", namespace="users")),
-    # ...
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
 

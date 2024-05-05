@@ -9,7 +9,7 @@ from core.users.api.views.inquilino_viewset import InquilinoProfileViewSet
 
 router = DefaultRouter() if settings.DEBUG else SimpleRouter()
 
-router.register("users", UserViewSet)
+router.register("users", UserViewSet , basename="users")
 router.register("agentes", AgenteImobiliarioProfileViewSet, basename="agentes")
 router.register("clientes", ClienteProfileViewSet, basename= "clientes")
 router.register("inquilinos", InquilinoProfileViewSet, basename= "inquilinos")

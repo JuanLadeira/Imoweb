@@ -24,10 +24,10 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
 
     item_name = "Cliente"
     plural_item_name = "Clientes"
-    permission_classes = [
-        permissions.IsAuthenticated,
-        permissions.DjangoModelPermissions,
-    ]
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    #     permissions.DjangoModelPermissions,
+    # ]
 
     def get_queryset(self):
         queryset = ClienteProfile.objects.all()
