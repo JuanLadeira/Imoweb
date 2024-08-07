@@ -1,17 +1,18 @@
-from rest_framework import viewsets, permissions
+from logging import getLogger
+
+from drf_spectacular.utils import OpenApiResponse
+from drf_spectacular.utils import extend_schema
+from rest_framework import permissions
+from rest_framework import viewsets
 from rest_framework.response import Response
-from drf_spectacular.utils import (
-    extend_schema,
-    OpenApiParameter,
-    OpenApiResponse,
-    extend_schema,
+
+from core.users.api.serializers.agente_imobiliario_serializer import (
+    AgenteImobiliarioProfileGetSerializer,
+)
+from core.users.api.serializers.agente_imobiliario_serializer import (
+    AgenteImobiliarioProfilePostSerializer,
 )
 from core.users.models import AgenteImobiliarioProfile
-from core.users.api.serializers.agente_imobiliario_serializer import (
-    AgenteImobiliarioProfileGetSerializer, 
-    AgenteImobiliarioProfilePostSerializer
-    )
-from logging import getLogger
 
 logger = getLogger("django")
 
@@ -24,15 +25,14 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
 
     item_name = "Agente Imobiliario"
     plural_item_name = "Agentes imobiliarios"
-    # permission_classes = [
-    #     permissions.IsAuthenticated,
-    #     permissions.DjangoModelPermissions,
-    # ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
+    ]
 
     def get_queryset(self):
-        queryset = AgenteImobiliarioProfile.objects.all()
-        return queryset
-    
+        return AgenteImobiliarioProfile.objects.all()
+
     def get_serializer_class(self):
         if self.request.method in ["GET"]:
             return AgenteImobiliarioProfileGetSerializer
@@ -40,7 +40,10 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Lista todos os {item_name}s",
-        description=f"Este endpoint lista todos os {item_name}s. Retorna uma lista paginada de {item_name}s",
+        description=f"""
+        Este endpoint lista todos os {item_name}s.
+        Retorna uma lista paginada de {item_name}s
+        """,
         responses={
             200: AgenteImobiliarioProfileGetSerializer(many=True),
             400: OpenApiResponse(description="Erro de validação"),
@@ -51,11 +54,14 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Cria um novo {item_name}",
-        description=f"Este endpoint permite criar um novo {item_name}.",
+        description=f"""
+        Este endpoint permite criar um novo {item_name}.
+        """,
         request=AgenteImobiliarioProfilePostSerializer,
         responses={
             201: AgenteImobiliarioProfileGetSerializer,
-            400: OpenApiResponse(description="Erro de validação"),},
+            400: OpenApiResponse(description="Erro de validação"),
+        },
     )
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
@@ -66,7 +72,7 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
         responses={
             200: AgenteImobiliarioProfileGetSerializer,
             404: OpenApiResponse(description=f"{item_name} não encontrado"),
-        }
+        },
     )
     def retrieve(self, request, slug=None, *args, **kwargs):
         instance = self.get_object()
@@ -87,7 +93,9 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Atualiza parcialmente um {item_name}",
-        description=f"Este endpoint permite atualizar parcialmente um {item_name} específico.",
+        description=f"""
+        Este endpoint permite atualizar parcialmente um {item_name} específico.
+        """,
         request=AgenteImobiliarioProfilePostSerializer,
         responses={
             200: AgenteImobiliarioProfileGetSerializer,

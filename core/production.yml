@@ -1,10 +1,10 @@
 version: '3'
 
 volumes:
-  production_postgres_data: {}
-  production_postgres_data_backups: {}
-  production_traefik: {}
-  production_django_media: {}
+  production_postgres_data_imo: {}
+  production_postgres_data_imo_backups: {}
+  production_imo_traefik: {}
+  production_imo_django_media: {}
 
 services:
   django: &django
@@ -12,9 +12,9 @@ services:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
 
-    image: core_production_django
+    image: core_imo_production_django
     volumes:
-      - production_django_media:/app/core/media
+      - production_imo_django_media:/app/core/media
     depends_on:
       - postgres
       - redis
@@ -27,10 +27,10 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: core_production_postgres
+    image: core_imo_production_postgres
     volumes:
-      - production_postgres_data:/var/lib/postgresql/data
-      - production_postgres_data_backups:/backups
+      - production_postgres_data_imo:/var/lib/postgresql/data
+      - production_postgres_data_imo_backups:/backups
     env_file:
       - ./.envs/.production/.postgres
 
@@ -38,11 +38,11 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/traefik/Dockerfile
-    image: core_production_traefik
+    image: core_imo_production_imo_traefik
     depends_on:
       - django
     volumes:
-      - production_traefik:/etc/traefik/acme
+      - production_imo_traefik:/etc/traefik/acme
     ports:
       - '0.0.0.0:80:80'
       - '0.0.0.0:443:443'
@@ -53,25 +53,25 @@ services:
 
   celeryworker:
     <<: *django
-    image: core_production_celeryworker
+    image: core_imo_production_celeryworker
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
-    image: core_production_celerybeat
+    image: core_imo_production_celerybeat
     command: /start-celerybeat
 
   flower:
     <<: *django
-    image: core_production_flower
+    image: core_imo_production_flower
     command: /start-flower
 
   nginx:
     build:
       context: .
       dockerfile: ./compose/production/nginx/Dockerfile
-    image: core_local_nginx
+    image: core_imo_production_nginx
     depends_on:
       - django
     volumes:
-      - production_django_media:/usr/share/nginx/media:ro
+      - production_imo_django_media:/usr/share/nginx/media:ro

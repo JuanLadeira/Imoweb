@@ -1,17 +1,18 @@
-from rest_framework import viewsets, permissions
+from logging import getLogger
+
+from drf_spectacular.utils import OpenApiResponse
+from drf_spectacular.utils import extend_schema
+from rest_framework import permissions
+from rest_framework import viewsets
 from rest_framework.response import Response
-from drf_spectacular.utils import (
-    extend_schema,
-    OpenApiParameter,
-    OpenApiResponse,
-    extend_schema,
+
+from core.users.api.serializers.cliente_profile_serializer import (
+    ClienteProfileGetSerializer,
+)
+from core.users.api.serializers.cliente_profile_serializer import (
+    ClienteProfilePostSerializer,
 )
 from core.users.models import ClienteProfile
-from core.users.api.serializers.cliente_profile_serializer import (
-    ClienteProfileGetSerializer, 
-    ClienteProfilePostSerializer
-    )
-from logging import getLogger
 
 logger = getLogger("django")
 
@@ -24,14 +25,13 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
 
     item_name = "Cliente"
     plural_item_name = "Clientes"
-    # permission_classes = [
-    #     permissions.IsAuthenticated,
-    #     permissions.DjangoModelPermissions,
-    # ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
+    ]
 
     def get_queryset(self):
-        queryset = ClienteProfile.objects.all()
-        return queryset
+        return ClienteProfile.objects.all()
 
     def get_serializer_class(self):
         if self.request.method in ["GET"]:
@@ -40,7 +40,10 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Lista todos os {item_name}s",
-        description=f"Este endpoint lista todos os {item_name}s. Retorna uma lista paginada de {item_name}s",
+        description=f"""
+        Este endpoint lista todos os {item_name}s.
+        Retorna uma lista paginada de {item_name}s
+        """,
         responses={
             200: ClienteProfileGetSerializer(many=True),
             400: OpenApiResponse(description="Erro de validação"),
@@ -55,7 +58,8 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
         request=ClienteProfilePostSerializer,
         responses={
             201: ClienteProfileGetSerializer,
-            400: OpenApiResponse(description="Erro de validação"),},
+            400: OpenApiResponse(description="Erro de validação"),
+        },
     )
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
@@ -66,7 +70,7 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
         responses={
             200: ClienteProfileGetSerializer,
             404: OpenApiResponse(description=f"{item_name} não encontrado"),
-        }
+        },
     )
     def retrieve(self, request, slug=None, *args, **kwargs):
         instance = self.get_object()
@@ -87,7 +91,10 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Atualiza parcialmente um {item_name}",
-        description=f"Este endpoint permite atualizar parcialmente um {item_name} específico.",
+        description=f"""
+        Este endpoint permite atualizar
+        parcialmente um {item_name} específico.
+        """,
         request=ClienteProfilePostSerializer,
         responses={
             200: ClienteProfileGetSerializer,
