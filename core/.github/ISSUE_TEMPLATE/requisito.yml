@@ -1,0 +1,66 @@
+name: "📝 Requisitos Funcionais"
+description: Criar um novo ticket para documentar um requisito funcional.
+title: "📝 [REQUISITO FUNCIONAL] - <título>"
+labels: [
+  "requisito funcional"
+]
+body:
+  - type: input
+    id: req_id
+    attributes:
+      label: "ID do Requisito"
+      description: Identificador único para o requisito funcional
+      placeholder: "RF-XXX"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Descrição do Requisito"
+      description: Descreva detalhadamente o requisito funcional
+      placeholder: "Descreva o comportamento esperado do sistema..."
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: "Justificativa"
+      description: Explique a razão pela qual este requisito é necessário
+      placeholder: "Explique por que este requisito é importante para o sistema..."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: "Critérios de Aceitação"
+      description: Detalhe os critérios específicos que devem ser atendidos para que o requisito seja considerado implementado com sucesso
+      placeholder: "1. O sistema deve fazer X quando Y ocorrer...\n2. O sistema não deve permitir Z..."
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notas Adicionais"
+      description: Espaço para adicionar quaisquer outras informações relevantes sobre o requisito
+      placeholder: "Notas adicionais sobre o requisito..."
+    validations:
+      required: false
+  - type: textarea
+    id: images
+    attributes:
+      label: "Diagramas ou Imagens"
+      description: "Insira links para diagramas ou imagens relevantes (hospedados externamente)"
+      placeholder: "Cole o link da imagem ou diagrama aqui..."
+    validations:
+      required: false
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Prioridade"
+      description: Selecione a prioridade deste requisito
+      options:
+        - Baixa
+        - Média
+        - Alta
+    validations:
+      required: true
