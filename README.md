@@ -6,6 +6,7 @@ O **Imobiliária App** é uma aplicação completa para a gestão de propriedade
 
 
 ## Diagrama de Classes
+![diagrama de classes imoweb](https://github.com/user-attachments/assets/4fa7764b-36b6-475f-b1eb-66b3134094e4)
 
 
 
