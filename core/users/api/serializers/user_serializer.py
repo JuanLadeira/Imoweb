@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "full_name",
-            "user_type",
+            "tipo",
             "contato",
             "endereco",
         ]

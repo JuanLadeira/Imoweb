@@ -1,65 +1,114 @@
-import contextlib
 from http import HTTPStatus
-from importlib import reload
 
 import pytest
-from django.contrib import admin
-from django.contrib.auth.models import AnonymousUser
 from django.urls import reverse
-from pytest_django.asserts import assertRedirects
 
-from core.users.models import User
+from core.users.models import AgenteImobiliario
+from core.users.models import Inquilino
+from core.users.models import Proprietario
+
+pytestmark = pytest.mark.django_db
 
 
-class TestUserAdmin:
+class TestAgenteAdmin:
     def test_changelist(self, admin_client):
-        url = reverse("admin:users_user_changelist")
+        url = reverse("admin:users_agenteimobiliario_changelist")
         response = admin_client.get(url)
         assert response.status_code == HTTPStatus.OK
 
     def test_search(self, admin_client):
-        url = reverse("admin:users_user_changelist")
+        url = reverse("admin:users_agenteimobiliario_changelist")
         response = admin_client.get(url, data={"q": "test"})
         assert response.status_code == HTTPStatus.OK
 
-    def test_add(self, admin_client):
-        url = reverse("admin:users_user_add")
+    def test_add(self, admin_client, agente_imobiliario_factory):
+        url = reverse("admin:users_agenteimobiliario_add")
+        response = admin_client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+
+        response = admin_client.post(
+            url,
+            data={
+                "user": agente_imobiliario_factory().user.pk,
+            },
+        )
+        assert response.status_code == HTTPStatus.FOUND
+        assert AgenteImobiliario.objects.filter(user__username="test").exists()
+
+    def test_view_agente(self, admin_client, agente_imobiliario_factory):
+        agente = agente_imobiliario_factory()
+        url = reverse(
+            "admin:users_agenteimobiliario_change", kwargs={"object_id": agente.pk}
+        )
+        response = admin_client.get(url)
+        assert response.status_code == HTTPStatus.OK
+
+
+class TestInquilinoAdmin:
+    def test_changelist(self, admin_client):
+        url = reverse("admin:users_inquilino_changelist")
+        response = admin_client.get(url)
+        assert response.status_code == HTTPStatus.OK
+
+    def test_search(self, admin_client):
+        url = reverse("admin:users_inquilino_changelist")
+        response = admin_client.get(url, data={"q": "test"})
+        assert response.status_code == HTTPStatus.OK
+
+    def test_add(self, admin_client, inquilino_factory):
+        url = reverse("admin:users_inquilino_add")
         response = admin_client.get(url)
         assert response.status_code == HTTPStatus.OK
 
         response = admin_client.post(
             url,
             data={
-                "username": "test",
-                "password1": "My_R@ndom-P@ssw0rd",
-                "password2": "My_R@ndom-P@ssw0rd",
+                "user": inquilino_factory().pk,
             },
         )
         assert response.status_code == HTTPStatus.FOUND
-        assert User.objects.filter(username="test").exists()
+        assert Inquilino.objects.filter(user__username="test").exists()
 
-    def test_view_user(self, admin_client):
-        user = User.objects.get(username="admin")
-        url = reverse("admin:users_user_change", kwargs={"object_id": user.pk})
+    def test_view_inquilino(self, admin_client, inquilino_factory):
+        inquilino = inquilino_factory()
+        url = reverse(
+            "admin:users_inquilino_change", kwargs={"object_id": inquilino.pk}
+        )
         response = admin_client.get(url)
         assert response.status_code == HTTPStatus.OK
 
-    @pytest.fixture()
-    def _force_allauth(self, settings):
-        settings.DJANGO_ADMIN_FORCE_ALLAUTH = True
-        # Reload the admin module to apply the setting change
-        import core.users.admin as users_admin
 
-        with contextlib.suppress(admin.sites.AlreadyRegistered):
-            reload(users_admin)
+class TestProprietarioAdmin:
+    def test_changelist(self, admin_client):
+        url = reverse("admin:users_proprietario_changelist")
+        response = admin_client.get(url)
+        assert response.status_code == HTTPStatus.OK
 
-    @pytest.mark.django_db()
-    @pytest.mark.usefixtures("_force_allauth")
-    def test_allauth_login(self, rf, settings):
-        request = rf.get("/fake-url")
-        request.user = AnonymousUser()
-        response = admin.site.login(request)
+    def test_search(self, admin_client):
+        url = reverse("admin:users_proprietario_changelist")
+        response = admin_client.get(url, data={"q": "test"})
+        assert response.status_code == HTTPStatus.OK
 
-        # The `admin` login view should redirect to the `allauth` login view
-        target_url = reverse(settings.LOGIN_URL) + "?next=" + request.path
-        assertRedirects(response, target_url, fetch_redirect_response=False)
+    def test_add(self, admin_client, proprietario_factory):
+        url = reverse("admin:users_proprietario_add")
+        response = admin_client.get(url)
+        assert response.status_code == HTTPStatus.OK
+
+        response = admin_client.post(
+            url,
+            data={
+                "user": proprietario_factory().pk,
+                "preferencias_de_busca": "example_preference",
+            },
+        )
+        assert response.status_code == HTTPStatus.FOUND
+        assert Proprietario.objects.filter(user__username="test").exists()
+
+    def test_view_proprietario(self, admin_client, proprietario_factory):
+        proprietario = proprietario_factory()
+        url = reverse(
+            "admin:users_proprietario_change", kwargs={"object_id": proprietario.pk}
+        )
+        response = admin_client.get(url)
+        assert response.status_code == HTTPStatus.OK

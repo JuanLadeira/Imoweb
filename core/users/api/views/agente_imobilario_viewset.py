@@ -7,18 +7,18 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from core.users.api.serializers.agente_imobiliario_serializer import (
-    AgenteImobiliarioProfileGetSerializer,
+    AgenteImobiliarioGetSerializer,
 )
 from core.users.api.serializers.agente_imobiliario_serializer import (
-    AgenteImobiliarioProfilePostSerializer,
+    AgenteImobiliarioPostSerializer,
 )
-from core.users.models import AgenteImobiliarioProfile
+from core.users.models import AgenteImobiliario
 
 logger = getLogger("django")
 
 
 @extend_schema(tags=["Agente Imobiliario"])
-class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
+class AgenteImobiliarioViewSet(viewsets.ModelViewSet):
     """
     Endpoint de Agente Imobiliario
     """
@@ -31,12 +31,12 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        return AgenteImobiliarioProfile.objects.all()
+        return AgenteImobiliario.objects.all()
 
     def get_serializer_class(self):
         if self.request.method in ["GET"]:
-            return AgenteImobiliarioProfileGetSerializer
-        return AgenteImobiliarioProfilePostSerializer
+            return AgenteImobiliarioGetSerializer
+        return AgenteImobiliarioPostSerializer
 
     @extend_schema(
         summary=f"Lista todos os {item_name}s",
@@ -45,7 +45,7 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
         Retorna uma lista paginada de {item_name}s
         """,
         responses={
-            200: AgenteImobiliarioProfileGetSerializer(many=True),
+            200: AgenteImobiliarioGetSerializer(many=True),
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -57,9 +57,9 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
         description=f"""
         Este endpoint permite criar um novo {item_name}.
         """,
-        request=AgenteImobiliarioProfilePostSerializer,
+        request=AgenteImobiliarioPostSerializer,
         responses={
-            201: AgenteImobiliarioProfileGetSerializer,
+            201: AgenteImobiliarioGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -70,7 +70,7 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
         summary=f"Recupera um {item_name}",
         description=f"Este endpoint permite recuperar um {item_name} específico.",
         responses={
-            200: AgenteImobiliarioProfileGetSerializer,
+            200: AgenteImobiliarioGetSerializer,
             404: OpenApiResponse(description=f"{item_name} não encontrado"),
         },
     )
@@ -82,9 +82,9 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary=f"Atualiza um {item_name}",
         description=f"Este endpoint permite atualizar um {item_name} específico.",
-        request=AgenteImobiliarioProfilePostSerializer,
+        request=AgenteImobiliarioPostSerializer,
         responses={
-            200: AgenteImobiliarioProfileGetSerializer,
+            200: AgenteImobiliarioGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -96,9 +96,9 @@ class AgenteImobiliarioProfileViewSet(viewsets.ModelViewSet):
         description=f"""
         Este endpoint permite atualizar parcialmente um {item_name} específico.
         """,
-        request=AgenteImobiliarioProfilePostSerializer,
+        request=AgenteImobiliarioPostSerializer,
         responses={
-            200: AgenteImobiliarioProfileGetSerializer,
+            200: AgenteImobiliarioGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )

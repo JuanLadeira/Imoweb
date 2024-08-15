@@ -4,29 +4,32 @@ from django.db import transaction
 from rest_framework import serializers
 
 from core.users.api.serializers.user_serializer import UserSerializer
-from core.users.models import InquilinoProfile
+from core.users.models import Inquilino
 
 logger = logging.getLogger("django")
 
 
-class InquilinoProfilePostSerializer(serializers.ModelSerializer):
+class InquilinoPostSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
-        model = InquilinoProfile
+        model = Inquilino
         fields = ["user"]
 
     @transaction.atomic
     def create(self, validated_data):
         user_data = validated_data.pop("user")
-        user_data["user_type"] = "inquilino"
+        user_data["tipo"] = "inquilino"
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid(raise_exception=True):
             user = user_serializer.save()
-        return InquilinoProfile.objects.create(user=user, **validated_data)
+        return Inquilino.objects.create(user=user, **validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        if "user" not in validated_data:
+            return super().update(instance, validated_data)
+
         user_data = validated_data.pop("user")
         user = instance.user
 
@@ -37,11 +40,11 @@ class InquilinoProfilePostSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class InquilinoProfileGetSerializer(serializers.ModelSerializer):
+class InquilinoGetSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
     class Meta:
-        model = InquilinoProfile
+        model = Inquilino
         fields = [
             "id",
             "user",

@@ -4,29 +4,31 @@ from django.db import transaction
 from rest_framework import serializers
 
 from core.users.api.serializers.user_serializer import UserSerializer
-from core.users.models import ClienteProfile
+from core.users.models import Proprietario
 
 logger = getLogger("django")
 
 
-class ClienteProfilePostSerializer(serializers.ModelSerializer):
+class ProprietarioPostSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
-        model = ClienteProfile
+        model = Proprietario
         fields = ["user", "preferencias_de_busca"]
 
     @transaction.atomic
     def create(self, validated_data):
         user_data = validated_data.pop("user")
-        user_data["user_type"] = "cliente"
+        user_data["tipo"] = "cliente"
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid(raise_exception=True):
             user = user_serializer.save()
-        return ClienteProfile.objects.create(user=user, **validated_data)
+        return Proprietario.objects.create(user=user, **validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        if "user" not in validated_data:
+            return super().update(instance, validated_data)
         user_data = validated_data.pop("user")
         user = instance.user
 
@@ -41,11 +43,11 @@ class ClienteProfilePostSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class ClienteProfileGetSerializer(serializers.ModelSerializer):
+class ProprietarioGetSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
     class Meta:
-        model = ClienteProfile
+        model = Proprietario
         fields = ["id", "user", "preferencias_de_busca"]
 
     def to_representation(self, instance):
