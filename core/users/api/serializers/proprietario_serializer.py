@@ -14,7 +14,7 @@ class ProprietarioPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Proprietario
-        fields = ["user", "preferencias_de_busca"]
+        fields = ["user"]
 
     @transaction.atomic
     def create(self, validated_data):
@@ -48,7 +48,7 @@ class ProprietarioGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Proprietario
-        fields = ["id", "user", "preferencias_de_busca"]
+        fields = ["id", "user"]
 
     def to_representation(self, instance):
         """
