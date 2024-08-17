@@ -28,7 +28,6 @@ class User(AbstractUser):
 
 class Proprietario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    preferencias_de_busca = models.JSONField()
 
     def __str__(self) -> str:
         return self.user.__str__()

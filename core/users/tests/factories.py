@@ -37,7 +37,6 @@ class UserFactory(DjangoModelFactory):
 
 class ProprietarioFactory(DjangoModelFactory):
     user = SubFactory(UserFactory)
-    preferencias_de_busca = FactoryFaker("sentence", nb_words=10)
 
     class Meta:
         model = Proprietario
