@@ -24,7 +24,7 @@ class AgenteImobiliarioPostSerializer(serializers.ModelSerializer):
         if user_serializer.is_valid(raise_exception=True):
             user = user_serializer.save()
 
-        return super().create(user=user, **validated_data)
+        return AgenteImobiliario.objects.create(user=user, **validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
