@@ -1,8 +1,8 @@
-# Imobiliária App
+# Imoweb
 
 ## Objetivo do Projeto
 
-O **Imobiliária App** é uma aplicação completa para a gestão de propriedades, usuários, contratos, pagamentos, documentos e comunicações relacionadas ao setor imobiliário. Este projeto visa facilitar a administração de propriedades para proprietários, agentes imobiliários e inquilinos, fornecendo um conjunto de ferramentas abrangentes para gerenciar todos os aspectos do negócio imobiliário.
+O **Imoweb** é uma aplicação completa para a gestão de propriedades, usuários, contratos, pagamentos, documentos e comunicações relacionadas ao setor imobiliário. Este projeto visa facilitar a administração de propriedades para proprietários, agentes imobiliários e inquilinos, fornecendo um conjunto de ferramentas abrangentes para gerenciar todos os aspectos do negócio imobiliário.
 
 
 ## Diagrama de Classes
