@@ -6,19 +6,15 @@ from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from core.users.api.serializers.inquilino_serializer import (
-    InquilinoProfileGetSerializer,
-)
-from core.users.api.serializers.inquilino_serializer import (
-    InquilinoProfilePostSerializer,
-)
-from core.users.models import InquilinoProfile
+from core.users.api.serializers.inquilino_serializer import InquilinoGetSerializer
+from core.users.api.serializers.inquilino_serializer import InquilinoPostSerializer
+from core.users.models import Inquilino
 
 logger = getLogger("django")
 
 
 @extend_schema(tags=["Inquilinos"])
-class InquilinoProfileViewSet(viewsets.ModelViewSet):
+class InquilinoViewSet(viewsets.ModelViewSet):
     """
     Endpoint de Inquilinos
     """
@@ -31,12 +27,12 @@ class InquilinoProfileViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        return InquilinoProfile.objects.all()
+        return Inquilino.objects.all()
 
     def get_serializer_class(self):
         if self.request.method in ["GET"]:
-            return InquilinoProfileGetSerializer
-        return InquilinoProfilePostSerializer
+            return InquilinoGetSerializer
+        return InquilinoPostSerializer
 
     @extend_schema(
         summary=f"Lista todos os {item_name}s",
@@ -45,7 +41,7 @@ class InquilinoProfileViewSet(viewsets.ModelViewSet):
         Retorna uma lista paginada de {item_name}s
         """,
         responses={
-            200: InquilinoProfileGetSerializer(many=True),
+            200: InquilinoGetSerializer(many=True),
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -55,9 +51,9 @@ class InquilinoProfileViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary=f"Cria um novo {item_name}",
         description=f"Este endpoint permite criar um novo {item_name}.",
-        request=InquilinoProfilePostSerializer,
+        request=InquilinoPostSerializer,
         responses={
-            201: InquilinoProfileGetSerializer,
+            201: InquilinoGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -68,7 +64,7 @@ class InquilinoProfileViewSet(viewsets.ModelViewSet):
         summary=f"Recupera um {item_name}",
         description=f"Este endpoint permite recuperar um {item_name} específico.",
         responses={
-            200: InquilinoProfileGetSerializer,
+            200: InquilinoGetSerializer,
             404: OpenApiResponse(description=f"{item_name} não encontrado"),
         },
     )
@@ -80,9 +76,9 @@ class InquilinoProfileViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary=f"Atualiza um {item_name}",
         description=f"Este endpoint permite atualizar um {item_name} específico.",
-        request=InquilinoProfilePostSerializer,
+        request=InquilinoPostSerializer,
         responses={
-            200: InquilinoProfileGetSerializer,
+            200: InquilinoGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -94,9 +90,9 @@ class InquilinoProfileViewSet(viewsets.ModelViewSet):
         description=f"""
         Este endpoint permite atualizar parcialmente um {item_name} específico.
         """,
-        request=InquilinoProfilePostSerializer,
+        request=InquilinoPostSerializer,
         responses={
-            200: InquilinoProfileGetSerializer,
+            200: InquilinoGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )

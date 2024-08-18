@@ -4,13 +4,13 @@ from django.db import transaction
 from rest_framework import serializers
 
 from core.users.api.serializers.user_serializer import UserSerializer
-from core.users.models import AgenteImobiliario
+from core.users.models import Proprietario
 from core.users.utils import get_especific_user_data
 
 logger = getLogger("django")
 
 
-class AgenteImobiliarioPostSerializer(serializers.ModelSerializer):
+class ProprietarioPostSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False)
     password = serializers.CharField(required=False)
     password2 = serializers.CharField(required=False)
@@ -22,7 +22,7 @@ class AgenteImobiliarioPostSerializer(serializers.ModelSerializer):
     endereco = serializers.CharField(required=False)
 
     class Meta:
-        model = AgenteImobiliario
+        model = Proprietario
         fields = [
             "username",
             "password",
@@ -38,12 +38,12 @@ class AgenteImobiliarioPostSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         user_data, validated_data = get_especific_user_data(validated_data)
-        user_data["tipo"] = "agente"
+        user_data["tipo"] = "proprietario"
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid(raise_exception=True):
             user = user_serializer.save()
 
-        return AgenteImobiliario.objects.create(user=user, **validated_data)
+        return Proprietario.objects.create(user=user, **validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
@@ -61,7 +61,7 @@ class AgenteImobiliarioPostSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class AgenteImobiliarioGetSerializer(serializers.ModelSerializer):
+class ProprietarioGetSerializer(serializers.ModelSerializer):
     user_id = serializers.SerializerMethodField()
     nome = serializers.SerializerMethodField()
     telefone = serializers.CharField(required=False, source="user.telefone")
@@ -70,7 +70,7 @@ class AgenteImobiliarioGetSerializer(serializers.ModelSerializer):
     endereco = serializers.CharField(required=False, source="user.endereco")
 
     class Meta:
-        model = AgenteImobiliario
+        model = Proprietario
         fields = [
             "id",
             "user_id",

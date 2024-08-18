@@ -6,37 +6,35 @@ from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from core.users.api.serializers.cliente_profile_serializer import (
-    ClienteProfileGetSerializer,
+from core.users.api.serializers.proprietario_serializer import ProprietarioGetSerializer
+from core.users.api.serializers.proprietario_serializer import (
+    ProprietarioPostSerializer,
 )
-from core.users.api.serializers.cliente_profile_serializer import (
-    ClienteProfilePostSerializer,
-)
-from core.users.models import ClienteProfile
+from core.users.models import Proprietario
 
 logger = getLogger("django")
 
 
-@extend_schema(tags=["Clientes"])
-class ClienteProfileViewSet(viewsets.ModelViewSet):
+@extend_schema(tags=["Proprietários"])
+class ProprietarioViewSet(viewsets.ModelViewSet):
     """
-    Endpoint de Clientes
+    Endpoint de Proprietários
     """
 
-    item_name = "Cliente"
-    plural_item_name = "Clientes"
+    item_name = "Proprietário"
+    plural_item_name = "Proprietários"
     permission_classes = [
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
     ]
 
     def get_queryset(self):
-        return ClienteProfile.objects.all()
+        return Proprietario.objects.all()
 
     def get_serializer_class(self):
         if self.request.method in ["GET"]:
-            return ClienteProfileGetSerializer
-        return ClienteProfilePostSerializer
+            return ProprietarioGetSerializer
+        return ProprietarioPostSerializer
 
     @extend_schema(
         summary=f"Lista todos os {item_name}s",
@@ -45,7 +43,7 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
         Retorna uma lista paginada de {item_name}s
         """,
         responses={
-            200: ClienteProfileGetSerializer(many=True),
+            200: ProprietarioGetSerializer(many=True),
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -55,9 +53,9 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary=f"Cria um novo {item_name}",
         description=f"Este endpoint permite criar um novo {item_name}.",
-        request=ClienteProfilePostSerializer,
+        request=ProprietarioPostSerializer,
         responses={
-            201: ClienteProfileGetSerializer,
+            201: ProprietarioGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -68,7 +66,7 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
         summary=f"Recupera um {item_name}",
         description=f"Este endpoint permite recuperar um {item_name} específico.",
         responses={
-            200: ClienteProfileGetSerializer,
+            200: ProprietarioGetSerializer,
             404: OpenApiResponse(description=f"{item_name} não encontrado"),
         },
     )
@@ -80,9 +78,9 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary=f"Atualiza um {item_name}",
         description=f"Este endpoint permite atualizar um {item_name} específico.",
-        request=ClienteProfilePostSerializer,
+        request=ProprietarioPostSerializer,
         responses={
-            200: ClienteProfileGetSerializer,
+            200: ProprietarioGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )
@@ -95,9 +93,9 @@ class ClienteProfileViewSet(viewsets.ModelViewSet):
         Este endpoint permite atualizar
         parcialmente um {item_name} específico.
         """,
-        request=ClienteProfilePostSerializer,
+        request=ProprietarioPostSerializer,
         responses={
-            200: ClienteProfileGetSerializer,
+            200: ProprietarioGetSerializer,
             400: OpenApiResponse(description="Erro de validação"),
         },
     )

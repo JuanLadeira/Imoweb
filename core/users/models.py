@@ -10,39 +10,39 @@ class User(AbstractUser):
     """
 
     USER_TYPE_CHOICES = (
-        ("cliente", "Cliente"),
+        ("proprietario", "Proprietário"),
         ("agente", "Agente Imobiliário"),
         ("inquilino", "Inquilino"),
     )
-    user_type = models.CharField(
+    tipo = models.CharField(
         max_length=20,
         choices=USER_TYPE_CHOICES,
-        default="cliente",
+        default="proprietario",
     )
-    contato = models.CharField(max_length=255, blank=True)
     endereco = models.CharField(max_length=255, blank=True)
+    telefone = models.CharField(max_length=255, blank=True)
+    foto = models.ImageField(upload_to="fotos/", null=True, blank=True)
 
     def __str__(self):
         return self.email
 
 
-class ClienteProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    preferencias_de_busca = models.JSONField()
-
-    def __str__(self) -> str:
-        return self.user.__str__()
-
-
-class AgenteImobiliarioProfile(models.Model):
+class Proprietario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.user.__str__()
+        return f"Proprietario {self.user.__str__()}"
 
 
-class InquilinoProfile(models.Model):
+class AgenteImobiliario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.user.__str__()
+        return f"Agente {self.user.__str__()}"
+
+
+class Inquilino(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Inquilino {self.user.__str__()}"

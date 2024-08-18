@@ -1,55 +1,88 @@
-import logging
+from logging import getLogger
 
 from django.db import transaction
 from rest_framework import serializers
 
 from core.users.api.serializers.user_serializer import UserSerializer
-from core.users.models import InquilinoProfile
+from core.users.models import Inquilino
+from core.users.utils import get_especific_user_data
 
-logger = logging.getLogger("django")
+logger = getLogger("django")
 
 
-class InquilinoProfilePostSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+class InquilinoPostSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+    password2 = serializers.CharField(required=False)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    telefone = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    foto = serializers.ImageField(required=False)
+    endereco = serializers.CharField(required=False)
 
     class Meta:
-        model = InquilinoProfile
-        fields = ["user"]
+        model = Inquilino
+        fields = [
+            "username",
+            "password",
+            "password2",
+            "first_name",
+            "last_name",
+            "telefone",
+            "email",
+            "foto",
+            "endereco",
+        ]
 
     @transaction.atomic
     def create(self, validated_data):
-        user_data = validated_data.pop("user")
-        user_data["user_type"] = "inquilino"
+        user_data, validated_data = get_especific_user_data(validated_data)
+        user_data["tipo"] = "inquilino"
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid(raise_exception=True):
             user = user_serializer.save()
-        return InquilinoProfile.objects.create(user=user, **validated_data)
+
+        return Inquilino.objects.create(user=user, **validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        user_data = validated_data.pop("user")
-        user = instance.user
+        user_data, validated_data = get_especific_user_data(validated_data)
 
-        user_serializer = UserSerializer(instance=user, data=user_data, partial=True)
+        user = instance.user
+        user_serializer = UserSerializer(
+            instance=user,
+            data=user_data,
+            partial=True,
+        )
         if user_serializer.is_valid(raise_exception=True):
             user_serializer.save()
 
         return super().update(instance, validated_data)
 
 
-class InquilinoProfileGetSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+class InquilinoGetSerializer(serializers.ModelSerializer):
+    user_id = serializers.SerializerMethodField()
+    nome = serializers.SerializerMethodField()
+    telefone = serializers.CharField(required=False, source="user.telefone")
+    email = serializers.EmailField(required=False, source="user.email")
+    foto = serializers.ImageField(required=False, source="user.foto")
+    endereco = serializers.CharField(required=False, source="user.endereco")
 
     class Meta:
-        model = InquilinoProfile
+        model = Inquilino
         fields = [
             "id",
-            "user",
+            "user_id",
+            "nome",
+            "telefone",
+            "email",
+            "foto",
+            "endereco",
         ]
 
-    def to_representation(self, instance):
-        """
-        Personaliza a representação de saída para adicionar
-        detalhes adicionais conforme necessário.
-        """
-        return super().to_representation(instance)
+    def get_nome(self, obj):
+        return obj.user.get_full_name()
+
+    def get_user_id(self, obj):
+        return obj.user.id
