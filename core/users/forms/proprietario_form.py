@@ -18,7 +18,8 @@ class ProprietarioChangeForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=30, required=False)
     is_active = forms.BooleanField(required=False)
-    contato = forms.CharField(max_length=255, required=False)
+    foto = forms.ImageField(required=False)
+    telefone = forms.CharField(max_length=255, required=False)
     endereco = forms.CharField(max_length=255, required=False)
 
     class Meta:
@@ -30,7 +31,8 @@ class ProprietarioChangeForm(forms.ModelForm):
             "first_name",
             "last_name",
             "is_active",
-            "contato",
+            "foto",
+            "telefone",
             "endereco",
         ]
 
@@ -45,8 +47,9 @@ class ProprietarioChangeForm(forms.ModelForm):
             self.fields["email"].initial = user.email
             self.fields["first_name"].initial = user.first_name
             self.fields["last_name"].initial = user.last_name
+            self.fields["foto"].initial = user.foto
             self.fields["is_active"].initial = user.is_active
-            self.fields["contato"].initial = user.contato
+            self.fields["telefone"].initial = user.telefone
             self.fields["endereco"].initial = user.endereco
 
 
@@ -68,7 +71,8 @@ class ProprietarioCreationForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=30, required=False)
     is_active = forms.BooleanField(required=False)
-    contato = forms.CharField(max_length=255, required=False)
+    foto = forms.ImageField(required=False)
+    telefone = forms.CharField(max_length=255, required=False)
     endereco = forms.CharField(max_length=255, required=False)
 
     def clean_password2(self):
@@ -102,6 +106,7 @@ class ProprietarioCreationForm(forms.ModelForm):
             "first_name",
             "last_name",
             "is_active",
-            "contato",
+            "foto",
+            "telefone",
             "endereco",
         ]

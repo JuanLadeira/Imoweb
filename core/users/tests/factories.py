@@ -22,6 +22,8 @@ class UserFactory(DjangoModelFactory):
     first_name = FactoryFaker("first_name")
     last_name = FactoryFaker("last_name")
     password = PostGenerationMethodCall("set_password", "test")
+    endereco = FactoryFaker("address")
+    telefone = FactoryFaker("phone_number")
 
     @classmethod
     def _after_postgeneration(cls, instance, create, results=None):

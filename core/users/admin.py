@@ -134,7 +134,7 @@ class InquilinoAdmin(BaseUserAdmin):
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.is_active = form.cleaned_data["is_active"]
-            user.contato = form.cleaned_data["contato"]
+            user.foto = form.cleaned_data["foto"]
             user.endereco = form.cleaned_data["endereco"]
             if form.cleaned_data["password1"]:
                 user.set_password(
@@ -151,7 +151,8 @@ class InquilinoAdmin(BaseUserAdmin):
                 "last_name": form.cleaned_data["last_name"],
                 "is_active": form.cleaned_data["is_active"],
                 "tipo": "inquilino",
-                "contato": form.cleaned_data["contato"],
+                "foto": form.cleaned_data["foto"],
+                "telefone": form.cleaned_data["telefone"],
                 "endereco": form.cleaned_data["endereco"],
             }
             user = User(**user_data)
@@ -192,7 +193,8 @@ class AgenteImobiliarioAdmin(BaseUserAdmin):
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.is_active = form.cleaned_data["is_active"]
-            user.contato = form.cleaned_data["contato"]
+            user.foto = form.cleaned_data["foto"]
+            user.telefone = form.cleaned_data["telefone"]
             user.endereco = form.cleaned_data["endereco"]
             if form.cleaned_data["password1"]:
                 user.set_password(
@@ -209,7 +211,8 @@ class AgenteImobiliarioAdmin(BaseUserAdmin):
                 "last_name": form.cleaned_data["last_name"],
                 "is_active": form.cleaned_data["is_active"],
                 "tipo": "agente",
-                "contato": form.cleaned_data["contato"],
+                "foto": form.cleaned_data["foto"],
+                "telefone": form.cleaned_data["telefone"],
                 "endereco": form.cleaned_data["endereco"],
             }
             user = User(**user_data)
@@ -250,7 +253,8 @@ class ProprietarioAdmin(BaseUserAdmin):
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.is_active = form.cleaned_data["is_active"]
-            user.contato = form.cleaned_data["contato"]
+            user.telefone = form.cleaned_data["telefone"]
+            user.foto = form.cleaned_data["foto"]
             user.endereco = form.cleaned_data["endereco"]
             if form.cleaned_data["password1"]:
                 user.set_password(
@@ -267,7 +271,8 @@ class ProprietarioAdmin(BaseUserAdmin):
                 "last_name": form.cleaned_data["last_name"],
                 "is_active": form.cleaned_data["is_active"],
                 "tipo": "proprietario",
-                "contato": form.cleaned_data["contato"],
+                "foto": form.cleaned_data["foto"],
+                "telefone": form.cleaned_data["telefone"],
                 "endereco": form.cleaned_data["endereco"],
             }
             user = User(**user_data)

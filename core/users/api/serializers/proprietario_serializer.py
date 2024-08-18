@@ -5,33 +5,51 @@ from rest_framework import serializers
 
 from core.users.api.serializers.user_serializer import UserSerializer
 from core.users.models import Proprietario
+from core.users.utils import get_especific_user_data
 
 logger = getLogger("django")
 
 
 class ProprietarioPostSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+    password2 = serializers.CharField(required=False)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    telefone = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    foto = serializers.ImageField(required=False)
+    endereco = serializers.CharField(required=False)
 
     class Meta:
         model = Proprietario
-        fields = ["user"]
+        fields = [
+            "username",
+            "password",
+            "password2",
+            "first_name",
+            "last_name",
+            "telefone",
+            "email",
+            "foto",
+            "endereco",
+        ]
 
     @transaction.atomic
     def create(self, validated_data):
-        user_data = validated_data.pop("user")
-        user_data["tipo"] = "cliente"
+        user_data, validated_data = get_especific_user_data(validated_data)
+        user_data["tipo"] = "proprietario"
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid(raise_exception=True):
             user = user_serializer.save()
+
         return Proprietario.objects.create(user=user, **validated_data)
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if "user" not in validated_data:
-            return super().update(instance, validated_data)
-        user_data = validated_data.pop("user")
-        user = instance.user
+        user_data, validated_data = get_especific_user_data(validated_data)
 
+        user = instance.user
         user_serializer = UserSerializer(
             instance=user,
             data=user_data,
@@ -44,15 +62,27 @@ class ProprietarioPostSerializer(serializers.ModelSerializer):
 
 
 class ProprietarioGetSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user_id = serializers.SerializerMethodField()
+    nome = serializers.SerializerMethodField()
+    telefone = serializers.CharField(required=False, source="user.telefone")
+    email = serializers.EmailField(required=False, source="user.email")
+    foto = serializers.ImageField(required=False, source="user.foto")
+    endereco = serializers.CharField(required=False, source="user.endereco")
 
     class Meta:
         model = Proprietario
-        fields = ["id", "user"]
+        fields = [
+            "id",
+            "user_id",
+            "nome",
+            "telefone",
+            "email",
+            "foto",
+            "endereco",
+        ]
 
-    def to_representation(self, instance):
-        """
-        Customizar a representação de saída para incluir,
-        detalhes adicionais conforme necessário
-        """
-        return super().to_representation(instance)
+    def get_nome(self, obj):
+        return obj.user.get_full_name()
+
+    def get_user_id(self, obj):
+        return obj.user.id

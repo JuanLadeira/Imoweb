@@ -3,19 +3,17 @@ import logging
 import pytest
 from django.forms import model_to_dict
 
-from core.users.api.serializers.agente_imobiliario_serializer import (
-    AgenteImobiliarioGetSerializer,
-)
-from core.users.api.serializers.agente_imobiliario_serializer import (
-    AgenteImobiliarioPostSerializer,
+from core.users.api.serializers.proprietario_serializer import ProprietarioGetSerializer
+from core.users.api.serializers.proprietario_serializer import (
+    ProprietarioPostSerializer,
 )
 
 logger = logging.getLogger(__name__)
 
 
 @pytest.mark.django_db()
-class TestAgenteImobiliarioPostSerializer:
-    def test_create_agente_imobiliario_post_serializer(self, user_factory):
+class TestProprietarioPostSerializer:
+    def test_create_proprietario_post_serializer(self, user_factory):
         user = user_factory.build()
         user = model_to_dict(user)
 
@@ -30,7 +28,7 @@ class TestAgenteImobiliarioPostSerializer:
             "endereco": user.get("endereco"),
         }
 
-        serializer = AgenteImobiliarioPostSerializer
+        serializer = ProprietarioPostSerializer
         serializer = serializer(data=data)
         assert serializer.is_valid(), serializer.errors
         agente = serializer.save()
@@ -39,15 +37,15 @@ class TestAgenteImobiliarioPostSerializer:
             "password"
         ), "Senha deveria ter sido criptografada"
 
-    def test_update_agente_imobiliario_post_serializer(
-        self, user_factory, agente_imobiliario_factory
+    def test_update_proprietario_post_serializer(
+        self, user_factory, proprietario_factory
     ):
-        agente = agente_imobiliario_factory()
+        proprietario = proprietario_factory()
         user_new = user_factory.build()
 
         user_new = model_to_dict(user_new)
 
-        user_data = {
+        data = {
             "first_name": user_new.get("first_name"),
             "last_name": user_new.get("last_name"),
             "telefone": user_new.get("telefone"),
@@ -55,26 +53,32 @@ class TestAgenteImobiliarioPostSerializer:
             "endereco": user_new.get("endereco"),
         }
 
-        serializer = AgenteImobiliarioPostSerializer
-        serializer = serializer(agente, data=user_data, partial=True)
+        serializer = ProprietarioPostSerializer
+        serializer = serializer(proprietario, data=data, partial=True)
         assert serializer.is_valid(), serializer.errors
-        agente = serializer.save()
-        assert agente.user.first_name == user_data.get("first_name"), serializer.errors
-
-    def test_read_agente_get_serializer(self, agente_imobiliario_factory):
-        agente = agente_imobiliario_factory()
-
-        serializer = AgenteImobiliarioGetSerializer
-        serializer = serializer(agente)
-
-        assert (
-            serializer.data.get("nome") == agente.user.get_full_name()
+        proprietario = serializer.save()
+        assert proprietario.user.first_name == data.get(
+            "first_name"
         ), "deveria ser igual"
-        assert serializer.data.get("user_id") == agente.user.id, "deveria ser igual"
+
+    def test_read_proprietario_get_serializer(self, proprietario_factory):
+        proprietario = proprietario_factory()
+
+        serializer = ProprietarioGetSerializer
+        serializer = serializer(proprietario)
+
         assert (
-            serializer.data.get("telefone") == agente.user.telefone
+            serializer.data.get("nome") == proprietario.user.get_full_name()
         ), "deveria ser igual"
-        assert serializer.data.get("email") == agente.user.email, "deveria ser igual"
         assert (
-            serializer.data.get("endereco") == agente.user.endereco
+            serializer.data.get("user_id") == proprietario.user.id
+        ), "deveria ser igual"
+        assert (
+            serializer.data.get("telefone") == proprietario.user.telefone
+        ), "deveria ser igual"
+        assert (
+            serializer.data.get("email") == proprietario.user.email
+        ), "deveria ser igual"
+        assert (
+            serializer.data.get("endereco") == proprietario.user.endereco
         ), "deveria ser igual"

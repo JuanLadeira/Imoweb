@@ -48,7 +48,6 @@ class TestAgenteAdmin:
                 "first_name": agente.user.first_name,
                 "last_name": agente.user.last_name,
                 "is_active": agente.user.is_active,
-                "contato": "contato",
                 "endereco": "endereco",
             },
         )

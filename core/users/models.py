@@ -19,8 +19,9 @@ class User(AbstractUser):
         choices=USER_TYPE_CHOICES,
         default="proprietario",
     )
-    contato = models.CharField(max_length=255, blank=True)
     endereco = models.CharField(max_length=255, blank=True)
+    telefone = models.CharField(max_length=255, blank=True)
+    foto = models.ImageField(upload_to="fotos/", null=True, blank=True)
 
     def __str__(self):
         return self.email
