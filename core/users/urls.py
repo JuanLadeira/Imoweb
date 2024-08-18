@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.urls import include
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework.routers import SimpleRouter
 
@@ -13,5 +15,9 @@ router.register("proprietarios", ProprietarioViewSet, basename="proprietarios")
 router.register("inquilinos", InquilinoViewSet, basename="inquilinos")
 
 
-app_name = "api"
-urlpatterns = router.urls
+app_name = "users"
+
+
+urlpatterns = [
+    path("users/", include(router.urls)),
+]

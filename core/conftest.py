@@ -3,6 +3,7 @@
 import pytest
 from django.test import Client
 from pytest_factoryboy import register
+from rest_framework.test import APIClient
 
 from core.users.tests.factories import AgenteImobiliarioFactory
 from core.users.tests.factories import InquilinoFactory
@@ -27,6 +28,11 @@ def admin_client(client, user_factory):
     login_sucess = client.login(username="admin", password="test123")
     assert login_sucess, "Admin login failed"
     return client
+
+
+@pytest.fixture()
+def api_client():
+    return APIClient()
 
 
 @pytest.fixture()
