@@ -28,21 +28,25 @@ class User(AbstractUser):
 
 
 class Proprietario(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="proprietario"
+    )
 
     def __str__(self) -> str:
         return f"Proprietario {self.user.__str__()}"
 
 
 class AgenteImobiliario(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="agente")
 
     def __str__(self) -> str:
         return f"Agente {self.user.__str__()}"
 
 
 class Inquilino(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="inquilino"
+    )
 
     def __str__(self) -> str:
         return f"Inquilino {self.user.__str__()}"
