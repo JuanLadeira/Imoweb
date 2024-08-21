@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-class ForgetPasswordSerializer(serializers.Serializer):
+class ForgotPasswordSerializer(serializers.Serializer):
     """
     Serializador para requisições de recuperação de senha.
     """

@@ -1,8 +1,10 @@
 from django.urls import path
 
+from core.authentication.views import forgot_password_view
 from core.authentication.views import login_view
 from core.authentication.views import logout_view
 from core.authentication.views import refresh_token_view
+from core.authentication.views import reset_password_view
 from core.authentication.views import verify_token_view
 
 urlpatterns = [
@@ -21,5 +23,15 @@ urlpatterns = [
         route="token/verify/",
         view=verify_token_view.TokenVerifyView.as_view(),
         name="token_verify",
+    ),
+    path(
+        route="forgot-password/",
+        view=forgot_password_view.ForgotPasswordView.as_view(),
+        name="forgot_password",
+    ),
+    path(
+        route="reset-password/",
+        view=reset_password_view.ResetPasswordView.as_view(),
+        name="reset_password",
     ),
 ]

@@ -5,8 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.authentication.serializers.forget_password_serializer import (
-    ForgetPasswordSerializer,
+from core.authentication.serializers.forgot_password_serializer import (
+    ForgotPasswordSerializer,
 )
 from core.authentication.tasks import send_reset_password_email
 from core.authentication.urls import CustomTokenGenerator
@@ -19,7 +19,7 @@ User = get_user_model()
     tags=["Auth"],
     summary="Auth - Esqueci minha senha - Envio de Token para redefinição de senha",
     description="Envia um email para o usuário com um token de redefinição de senha.",
-    request=ForgetPasswordSerializer,
+    request=ForgotPasswordSerializer,
     responses={
         200: {
             "description": "Se o email fornecido estiver em nossa base de dados, nós enviaremos um email de redefinição de senha.",
@@ -42,7 +42,7 @@ User = get_user_model()
         ),
     ],
 )
-class ForgetPasswordView(APIView):
+class ForgotPasswordView(APIView):
     """
     View para solicitar redefinição de senha de um usuário através do envio de um token de redefinição para o email fornecido.
 
@@ -69,7 +69,7 @@ class ForgetPasswordView(APIView):
         Retorna:
             Response: Uma resposta HTTP indicando se o email de redefinição de senha foi enviado.
         """
-        serializer = ForgetPasswordSerializer(data=request.data)
+        serializer = ForgotPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         email = serializer.validated_data["email"]
