@@ -9,7 +9,7 @@ from core.authentication.serializers.forgot_password_serializer import (
     ForgotPasswordSerializer,
 )
 from core.authentication.tasks import send_reset_password_email
-from core.authentication.urls import CustomTokenGenerator
+from core.authentication.utils import CustomTokenGenerator
 
 custom_token_generator = CustomTokenGenerator()
 User = get_user_model()
@@ -17,7 +17,7 @@ User = get_user_model()
 
 @extend_schema(
     tags=["Auth"],
-    summary="Auth - Esqueci minha senha - Envio de Token para redefinição de senha",
+    summary="Auth - Forgot my password - Envio de Token para redefinição de senha",
     description="Envia um email para o usuário com um token de redefinição de senha.",
     request=ForgotPasswordSerializer,
     responses={
@@ -27,13 +27,13 @@ User = get_user_model()
     },
     examples=[
         OpenApiExample(
-            name="Exemplo de Esqueci Minha Senha Request",
+            name="Exemplo de requisição",
             description="Exemplo de uma requisição válida para esqueci minha senha. A requisição deve incluir o email.",
             value={"email": "email@example.com"},
             request_only=True,
         ),
         OpenApiExample(
-            name="Exemplo de Esqueci Minha Senha Response",
+            name="Exemplo de resposta",
             description="Exemplo de uma resposta válida para esqueci minha senha. A resposta deve incluir a mensagem.",
             value={
                 "message": "Se o email fornecido estiver em nossa base de dados, nós enviaremos um email com token para redefinição de senha.",

@@ -19,5 +19,5 @@ app_name = "users"
 
 
 urlpatterns = [
-    path("users/", include(router.urls)),
+    path("", include(router.urls)),
 ]
