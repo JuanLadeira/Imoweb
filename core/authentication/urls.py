@@ -13,7 +13,7 @@ urlpatterns = [
         view=login_view.LoginView.as_view(),
         name="token_obtain_pair",
     ),
-    path(route="token/logout", view=logout_view.logout_view, name="logout"),
+    path(route="token/logout/", view=logout_view.logout_view, name="logout"),
     path(
         route="token/refresh/",
         view=refresh_token_view.RefreshTokenView.as_view(),
