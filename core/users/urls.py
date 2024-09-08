@@ -7,6 +7,7 @@ from rest_framework.routers import SimpleRouter
 from core.users.api.views.agente_imobilario_viewset import AgenteImobiliarioViewSet
 from core.users.api.views.inquilino_viewset import InquilinoViewSet
 from core.users.api.views.proprietario_viewset import ProprietarioViewSet
+from core.users.api.views.user_logged_in_viewset import user_logged_in_view
 
 router = DefaultRouter() if settings.DEBUG else SimpleRouter()
 
@@ -20,4 +21,5 @@ app_name = "users"
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("user_logged_in/", user_logged_in_view, name="user_logged_in"),
 ]
