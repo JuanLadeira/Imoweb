@@ -13,7 +13,7 @@ urlpatterns = [
         view=login_view.LoginView.as_view(),
         name="token_obtain_pair",
     ),
-    path(route="token/logout/", view=logout_view.logout_view, name="logout"),
+    path(route="logout/", view=logout_view.logout_view, name="logout"),
     path(
         route="token/refresh/",
         view=refresh_token_view.RefreshTokenView.as_view(),
@@ -21,7 +21,7 @@ urlpatterns = [
     ),
     path(
         route="token/verify/",
-        view=verify_token_view.TokenVerifyView.as_view(),
+        view=verify_token_view.VerifyTokenView.as_view(),
         name="token_verify",
     ),
     path(

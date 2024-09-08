@@ -78,7 +78,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-    def get_tipo_display_name(self):
+    def get_tipo_display_name(self) -> str:
         """
         Obtém o nome legível associado ao valor do campo `tipo`.
 

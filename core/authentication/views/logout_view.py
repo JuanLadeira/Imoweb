@@ -82,6 +82,6 @@ def logout_view(request):
     token = RefreshToken(refresh_token)
     token.blacklist()
     return Response(
-        {"message": "Logout bem-sucedido, refresh token foi invalidado."},
+        {"detail": "Logout realizado com sucesso."},
         status=status.HTTP_205_RESET_CONTENT,
     )

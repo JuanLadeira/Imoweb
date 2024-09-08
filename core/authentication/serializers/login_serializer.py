@@ -1,7 +1,13 @@
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
+from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+class ResponseLoginSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()
 
 
 class LoginSerializer(TokenObtainPairSerializer):
@@ -37,18 +43,7 @@ class LoginSerializer(TokenObtainPairSerializer):
             Token: Um token JWT customizado.
         """
 
-        token = super().get_token(user)
-
-        token["tipo"] = user.tipo
-        if user.tipo == "inquilino":
-            token["id_especifico"] = user.inquilino.id
-        elif user.tipo == "agente":
-            token["id_especifico"] = user.agente.id
-        elif user.tipo == "proprietario":
-            token["id_especifico"] = user.proprietario.id
-        else:
-            raise AuthenticationFailed
-        return token
+        return super().get_token(user)
 
     def validate(self, attrs):
         """

@@ -1,10 +1,12 @@
 from drf_spectacular.utils import OpenApiExample
 from drf_spectacular.utils import OpenApiParameter
+from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from core.authentication.serializers.login_serializer import LoginSerializer
+from core.authentication.serializers.login_serializer import ResponseLoginSerializer
 
 
 @extend_schema(
@@ -13,8 +15,8 @@ from core.authentication.serializers.login_serializer import LoginSerializer
     description="Este endpoint valida as credenciais do usuário e, se forem válidas, retorna um token de acesso e um token de refresh.",
     request=LoginSerializer,
     responses={
-        200: {"description": {"access": "string", "refresh": "string"}},
-        400: {"description": "Credenciais inválidas"},
+        200: ResponseLoginSerializer,
+        400: OpenApiResponse(description="Erro de autenticação."),
     },
     parameters=[
         OpenApiParameter(
@@ -37,16 +39,10 @@ from core.authentication.serializers.login_serializer import LoginSerializer
             value={"username": "usuario", "password": "senha123"},
             request_only=True,
         ),
-        OpenApiExample(
-            name="Exemplo de Token Request",
-            description="Exemplo de uma resposta valida para obter tokens de acesso e refresh. A resposta deve incluir o access token e o refresh token.",
-            value={"access": "string", "refresh": "string"},
-            response_only=True,
-        ),
     ],
 )
 class LoginView(TokenObtainPairView):
-    """
+    """'
     View personalizada para a obtenção de pares de tokens JWT (JSON Web Tokens).
 
     Utiliza 'LoginSerializer' para validar as credenciais do usuário e,

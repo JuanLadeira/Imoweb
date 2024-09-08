@@ -9,9 +9,9 @@ class UserLoggedInSerializer(serializers.ModelSerializer):
     A classe UserLoggedInSerializer é responsável por serializar os dados de um usuário logado.
     """
 
-    user_permissions = serializers.SerializerMethodField()
-    nome = serializers.SerializerMethodField()
-    tipo = serializers.SerializerMethodField()
+    user_permissions = serializers.SerializerMethodField(read_only=True)
+    nome = serializers.SerializerMethodField(read_only=True)
+    tipo = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -53,8 +53,8 @@ class UserLoggedInSerializer(serializers.ModelSerializer):
         serializer = PermissionSerializer(view_permissions, many=True)
         return serializer.data
 
-    def get_nome(self, instance: User):
+    def get_nome(self, instance: User) -> str:
         return instance.get_full_name()
 
-    def get_tipo(self, instance: User):
+    def get_tipo(self, instance: User) -> str:
         return instance.get_tipo_display_name()
