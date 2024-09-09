@@ -1,4 +1,5 @@
 # ruff: noqa: S106
+import logging
 
 import pytest
 from django.test import Client
@@ -9,6 +10,8 @@ from core.users.tests.factories import AgenteImobiliarioFactory
 from core.users.tests.factories import InquilinoFactory
 from core.users.tests.factories import ProprietarioFactory
 from core.users.tests.factories import UserFactory
+
+log = logging.getLogger(__name__)
 
 
 @pytest.fixture(autouse=True)
@@ -28,6 +31,92 @@ def admin_client(client, user_factory):
     login_sucess = client.login(username="admin", password="test123")
     assert login_sucess, "Admin login failed"
     return client
+
+
+@pytest.fixture()
+def agente_logado(api_client, agente_imobiliario_factory, user_factory):
+    user = user_factory(is_superuser=False)
+    user.set_password("password")
+    user.save()
+
+    agente = agente_imobiliario_factory(
+        user=user,
+    )
+    agente.save()
+    response = api_client.post(
+        "/api/auth/token/",
+        {
+            "username": agente.user.username,
+            "password": "password",
+        },
+        format="json",
+    )
+
+    token = response.data["access"]
+    api_client.credentials(HTTP_AUTHORIZATION=f"JWT {token}")
+    return {
+        "api_client": api_client,
+        "agente": agente,
+        "access": token,
+        "refresh": response.data["refresh"],
+    }
+
+
+@pytest.fixture()
+def inquilino_logado(api_client, inquilino_factory, user_factory) -> dict:
+    user = user_factory(is_superuser=False)
+    user.set_password("password")
+    user.save()
+
+    inquilino = inquilino_factory(
+        user=user,
+    )
+    inquilino.save()
+    response = api_client.post(
+        "/api/auth/token/",
+        {
+            "username": inquilino.user.username,
+            "password": "password",
+        },
+        format="json",
+    )
+    token = response.data["access"]
+    api_client.credentials(HTTP_AUTHORIZATION=f"JWT {token}")
+    return {
+        "api_client": api_client,
+        "inquilino": inquilino,
+        "access": token,
+        "refresh": response.data["refresh"],
+    }
+
+
+@pytest.fixture()
+def proprietario_logado(api_client, proprietario_factory, user_factory):
+    user = user_factory(is_superuser=False)
+    user.set_password("password")
+    user.save()
+
+    proprietario = proprietario_factory(
+        user=user,
+    )
+    proprietario.save()
+    response = api_client.post(
+        "/api/auth/token/",
+        {
+            "username": proprietario.user.username,
+            "password": "password",
+        },
+        format="json",
+    )
+    log.info(response.data)
+    token = response.data["access"]
+    api_client.credentials(HTTP_AUTHORIZATION=f"JWT {token}")
+    return {
+        "api_client": api_client,
+        "proprietario": proprietario,
+        "access": response.data["access"],
+        "refresh": response.data["refresh"],
+    }
 
 
 @pytest.fixture()

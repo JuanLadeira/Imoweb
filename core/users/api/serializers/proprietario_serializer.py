@@ -1,4 +1,5 @@
 from logging import getLogger
+from typing import Any
 
 from django.db import transaction
 from rest_framework import serializers
@@ -36,7 +37,7 @@ class ProprietarioPostSerializer(serializers.ModelSerializer):
         ]
 
     @transaction.atomic
-    def create(self, validated_data):
+    def create(self, validated_data: dict[str, Any]):
         user_data, validated_data = get_especific_user_data(validated_data)
         user_data["tipo"] = "proprietario"
         user_serializer = UserSerializer(data=user_data)

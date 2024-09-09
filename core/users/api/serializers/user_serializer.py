@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError as djValidationError
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError as drfValidationError
 
+from core.users.api.validator import validar_senhas_coincidem
 from core.users.models import User
 
 
@@ -29,8 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         Método que valida a senha de um usuário.
         """
         if password2 := self.initial_data.get("password2"):
-            if value != password2:
-                raise drfValidationError({"password": "As senhas não coincidem."})
+            validar_senhas_coincidem(value, password2)
 
         try:
             validate_password(value)
