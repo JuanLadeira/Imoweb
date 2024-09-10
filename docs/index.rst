@@ -7,13 +7,11 @@ Welcome to core's documentation!
 ======================================================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    howto
-   users
-
-
+   api/modules
 
 Indices and tables
 ==================

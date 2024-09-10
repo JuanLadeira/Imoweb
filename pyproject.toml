@@ -182,3 +182,5 @@ manage = "docker compose -f local.yml run --rm django python manage.py"
 format = 'docker compose -f local.yml run --rm django python -m blue . --diff && isort .'
 test = "docker compose -f local.yml run --rm django pytest -s --cov=core -vv"
 logs = "docker compose -f local.yml logs"
+docs = "docker compose -f docs.yml up --build "
+apidocs = "docker compose -f docs.yml run --rm docs make apidocs"
