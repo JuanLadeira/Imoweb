@@ -7,7 +7,7 @@ psycopg[c]==3.1.18  # https://github.com/psycopg/psycopg
 
 # Django
 # ------------------------------------------------------------------------------
-django-anymail[sendgrid]==10.3  # https://github.com/anymail/django-anymail
+django-anymail[sendgrid]==12.0  # https://github.com/anymail/django-anymail
 
 django-debug-toolbar==4.4.6  # https://github.com/jazzband/django-debug-toolbar
 django-extensions==3.2.3  # https://github.com/django-extensions/django-extensions
