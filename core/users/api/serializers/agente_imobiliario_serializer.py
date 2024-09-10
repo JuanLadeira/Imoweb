@@ -60,6 +60,10 @@ class AgenteImobiliarioPostSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
+    def to_representation(self, instance):
+        serializer = AgenteImobiliarioGetSerializer(instance)
+        return serializer.data
+
 
 class AgenteImobiliarioGetSerializer(serializers.ModelSerializer):
     user_id = serializers.SerializerMethodField()

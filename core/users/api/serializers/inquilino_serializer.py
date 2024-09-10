@@ -60,6 +60,10 @@ class InquilinoPostSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
+    def to_representation(self, instance):
+        serializer = InquilinoGetSerializer(instance)
+        return serializer.data
+
 
 class InquilinoGetSerializer(serializers.ModelSerializer):
     user_id = serializers.SerializerMethodField()

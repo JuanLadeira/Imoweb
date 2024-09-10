@@ -61,6 +61,10 @@ class ProprietarioPostSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
+    def to_representation(self, instance):
+        serializer = ProprietarioGetSerializer(instance)
+        return serializer.data
+
 
 class ProprietarioGetSerializer(serializers.ModelSerializer):
     user_id = serializers.SerializerMethodField()
