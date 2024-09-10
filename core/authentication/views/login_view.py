@@ -1,6 +1,5 @@
 from drf_spectacular.utils import OpenApiExample
 from drf_spectacular.utils import OpenApiParameter
-from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -14,10 +13,7 @@ from core.authentication.serializers.login_serializer import ResponseLoginSerial
     summary="Auth - Login View",
     description="Este endpoint valida as credenciais do usuário e, se forem válidas, retorna um token de acesso e um token de refresh.",
     request=LoginSerializer,
-    responses={
-        200: ResponseLoginSerializer,
-        400: OpenApiResponse(description="Erro de autenticação."),
-    },
+    responses=ResponseLoginSerializer,
     parameters=[
         OpenApiParameter(
             name="username",
