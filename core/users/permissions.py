@@ -54,7 +54,7 @@ def create_group_with_permissions(user_type):
                     permission, _ = Permission.objects.get_or_create(
                         content_type=content_type,
                         codename=codename,
-                        defaults={"name": "Can {} {}"}.format(action, model_name),
+                        defaults={"name": f"Can {action} {model_name}"},
                     )
                     group.permissions.add(permission)
             except ContentType.DoesNotExist:

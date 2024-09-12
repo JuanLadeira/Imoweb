@@ -12,9 +12,7 @@ log = logging.getLogger(__name__)
 class TestInquilinoCreateEndpoint:
     endpoint = "/api/users/inquilinos/"
 
-    def test_agente_create_inquilino(
-        self, agente_logado, inquilino_factory, user_factory
-    ):
+    def test_agente_create_inquilino(self, agente_logado, user_factory):
         dados = agente_logado
         api_client = dados["api_client"]
 
@@ -22,7 +20,7 @@ class TestInquilinoCreateEndpoint:
 
         user_data = model_to_dict(user)
 
-        inquilino_data = {
+        data = {
             "username": user_data["username"],
             "password": user_data["password"],
             "password2": user_data["password"],
@@ -30,24 +28,32 @@ class TestInquilinoCreateEndpoint:
 
         response = api_client.post(
             self.endpoint,
-            data=inquilino_data,
+            data=data,
             format="json",
         )
         log.info(response)
         assert response.status_code == HTTPStatus.CREATED, response.data
 
-    def test_proprietario_create_inquilino(
-        self, proprietario_logado, inquilino_factory
-    ):
+    def test_proprietario_create_inquilino(self, proprietario_logado, user_factory):
         dados = proprietario_logado
         api_client = dados["api_client"]
         refresh_token = dados["refresh"]
 
-        inquilino = inquilino_factory.build()
+        user = user_factory.build()
 
-        inquilino_data = model_to_dict(inquilino)
+        user_data = model_to_dict(user)
 
-        log.info(inquilino_data)
+        data = {
+            "username": user_data["username"],
+            "password": user_data["password"],
+            "password2": user_data["password"],
+        }
+
+        response = api_client.post(
+            self.endpoint,
+            data=data,
+            format="json",
+        )
 
         response = api_client.post(
             self.endpoint,
@@ -58,15 +64,25 @@ class TestInquilinoCreateEndpoint:
         )
         assert response.status_code == HTTPStatus.FORBIDDEN, response.data
 
-    def test_inquilino_create_inquilino(self, inquilino_logado, inquilino_factory):
+    def test_inquilino_create_inquilino(self, inquilino_logado, user_factory):
         dados = inquilino_logado
         api_client = dados["api_client"]
 
-        inquilino = inquilino_factory.build()
+        user = user_factory.build()
 
-        inquilino_data = model_to_dict(inquilino)
+        user_data = model_to_dict(user)
 
-        log.info(inquilino_data)
+        data = {
+            "username": user_data["username"],
+            "password": user_data["password"],
+            "password2": user_data["password"],
+        }
+
+        response = api_client.post(
+            self.endpoint,
+            data=data,
+            format="json",
+        )
 
         response = api_client.post(
             self.endpoint,
