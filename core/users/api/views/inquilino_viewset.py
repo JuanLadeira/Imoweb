@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from core.users.api.serializers.inquilino_serializer import InquilinoGetSerializer
 from core.users.api.serializers.inquilino_serializer import InquilinoPostSerializer
 from core.users.models import Inquilino
-from core.users.permissions import IsOwnerOrReadOnly
 
 logger = getLogger("django")
 
@@ -26,7 +25,6 @@ class InquilinoViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
-        IsOwnerOrReadOnly,
     ]
 
     def get_queryset(self):
