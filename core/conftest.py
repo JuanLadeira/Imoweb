@@ -1,5 +1,6 @@
 # ruff: noqa: S106
 import logging
+from collections.abc import Generator
 
 import pytest
 from django.test import Client
@@ -34,7 +35,9 @@ def admin_client(client, user_factory):
 
 
 @pytest.fixture()
-def agente_logado(api_client, agente_imobiliario_factory, user_factory):
+def agente_logado(
+    api_client, agente_imobiliario_factory, user_factory
+) -> Generator[dict, None, None]:
     user = user_factory(is_superuser=False)
     user.set_password("password")
     user.save()
@@ -54,16 +57,19 @@ def agente_logado(api_client, agente_imobiliario_factory, user_factory):
 
     token = response.data["access"]
     api_client.credentials(HTTP_AUTHORIZATION=f"JWT {token}")
-    return {
+    yield {
         "api_client": api_client,
         "agente": agente,
         "access": token,
         "refresh": response.data["refresh"],
     }
+    api_client.credentials()
 
 
 @pytest.fixture()
-def inquilino_logado(api_client, inquilino_factory, user_factory) -> dict:
+def inquilino_logado(
+    api_client, inquilino_factory, user_factory
+) -> Generator[dict, None, None]:
     user = user_factory(is_superuser=False)
     user.set_password("password")
     user.save()
@@ -82,16 +88,20 @@ def inquilino_logado(api_client, inquilino_factory, user_factory) -> dict:
     )
     token = response.data["access"]
     api_client.credentials(HTTP_AUTHORIZATION=f"JWT {token}")
-    return {
+    yield {
         "api_client": api_client,
         "inquilino": inquilino,
         "access": token,
         "refresh": response.data["refresh"],
     }
 
+    api_client.credentials()
+
 
 @pytest.fixture()
-def proprietario_logado(api_client, proprietario_factory, user_factory):
+def proprietario_logado(
+    api_client, proprietario_factory, user_factory
+) -> Generator[dict, None, None]:
     user = user_factory(is_superuser=False)
     user.set_password("password")
     user.save()
@@ -111,12 +121,13 @@ def proprietario_logado(api_client, proprietario_factory, user_factory):
     log.info(response.data)
     token = response.data["access"]
     api_client.credentials(HTTP_AUTHORIZATION=f"JWT {token}")
-    return {
+    yield {
         "api_client": api_client,
         "proprietario": proprietario,
         "access": response.data["access"],
         "refresh": response.data["refresh"],
     }
+    api_client.credentials()
 
 
 @pytest.fixture()
