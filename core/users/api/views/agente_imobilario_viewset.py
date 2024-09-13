@@ -4,7 +4,7 @@ from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 
 from core.users.api.serializers.agente_imobiliario_serializer import (
     AgenteImobiliarioGetSerializer,
@@ -23,6 +23,7 @@ class AgenteImobiliarioViewSet(viewsets.ModelViewSet):
     Endpoint de Agente Imobiliario
     """
 
+    queryset = AgenteImobiliario.objects.all()
     item_name = "Agente Imobiliario"
     plural_item_name = "Agentes imobiliarios"
     permission_classes = [
@@ -31,7 +32,11 @@ class AgenteImobiliarioViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        return AgenteImobiliario.objects.all()
+        user = self.request.user
+        query = self.queryset.all()
+        if user.is_agente:
+            return query
+        return query.none()
 
     def get_serializer_class(self):
         if self.request.method in ["GET"]:
@@ -50,6 +55,13 @@ class AgenteImobiliarioViewSet(viewsets.ModelViewSet):
         },
     )
     def list(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_inquilino:
+            raise PermissionDenied
+
+        if user.is_proprietario:
+            raise PermissionDenied
+
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
@@ -75,9 +87,7 @@ class AgenteImobiliarioViewSet(viewsets.ModelViewSet):
         },
     )
     def retrieve(self, request, slug=None, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+        return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
         summary=f"Atualiza um {item_name}",
