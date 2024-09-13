@@ -95,6 +95,36 @@ class User(AbstractUser):
         ]
         return matching_types[0] if matching_types else "Tipo desconhecido"
 
+    @property
+    def is_proprietario(self) -> bool:
+        """
+        Verifica se o usuário é um proprietário.
+
+        Returns:
+            bool: True se o usuário for um proprietário, False caso contrário.
+        """
+        return self.tipo == UserType.PROPRIETARIO.value
+
+    @property
+    def is_agente(self) -> bool:
+        """
+        Verifica se o usuário é um agente imobiliário.
+
+        Returns:
+            bool: True se o usuário for um agente imobiliário, False caso contrário.
+        """
+        return self.tipo == UserType.AGENTE.value
+
+    @property
+    def is_inquilino(self) -> bool:
+        """
+        Verifica se o usuário é um inquilino.
+
+        Returns:
+            bool: True se o usuário for um inquilino, False caso contrário.
+        """
+        return self.tipo == UserType.INQUILINO.value
+
 
 class Proprietario(models.Model):
     """
