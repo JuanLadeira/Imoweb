@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from core.users.api.serializers.inquilino_serializer import InquilinoGetSerializer
 from core.users.api.serializers.inquilino_serializer import InquilinoPostSerializer
 from core.users.models import Inquilino
+from core.users.permissions import IsOwnerOrReadOnly
 
 logger = getLogger("django")
 
@@ -19,15 +20,29 @@ class InquilinoViewSet(viewsets.ModelViewSet):
     Endpoint de Inquilinos
     """
 
+    queryset = Inquilino.objects.all()
     item_name = "Inquilino"
     plural_item_name = "Inquilinos"
     permission_classes = [
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
+        IsOwnerOrReadOnly,
     ]
 
     def get_queryset(self):
-        return Inquilino.objects.all()
+        user = self.request.user
+        queryset = self.queryset.all()
+        if user.is_inquilino:
+            return queryset.filter(user=user)
+
+        if user.is_agente:
+            return queryset.all()
+
+        if user.is_proprietario:
+            # TODO! falta implementar a lógica de proprietario buscar somente seus inquilinos, ou fazer endpoint separado.
+            return queryset.none()
+
+        return self.queryset.none()
 
     def get_serializer_class(self):
         if self.request.method in ["GET"]:
