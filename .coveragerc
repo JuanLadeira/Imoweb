@@ -1,0 +1,6 @@
+[run]
+omit =
+    core/templates/*
+    core/users/tests/*
+    core/users/management/*
+    core/contrib/*
