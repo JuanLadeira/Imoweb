@@ -5,6 +5,8 @@ import logging
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from rest_framework.permissions import SAFE_METHODS
+from rest_framework.permissions import BasePermission
 
 from core.users.models import UserType
 
@@ -14,15 +16,16 @@ log = logging.getLogger(__name__)
 AGENTE_IMOBILIARIO_PERMISSIONS = {
     "users.Proprietario": ["view", "add", "change", "delete"],
     "users.Inquilino": ["view", "add", "change", "delete"],
+    "users.AgenteImobiliario": ["view", "change"],
     "users.User": ["change_self"],  # Permissão para alterar a si mesmo
 }
 
 INQUILINO_PERMISSIONS = {
-    "users.User": ["change_self"],  # Permissão para alterar a si mesmo
+    "users.User": ["change_self", "view_self"],  # Permissão para alterar a si mesmo
 }
 
 PROPRIETARIO_PERMISSIONS = {
-    "users.User": ["change_self"],  # Permissão para alterar a si mesmo
+    "users.User": ["change_self", "view_self"],  # Permissão para alterar a si mesmo
 }
 
 PERMISSIONS_MAP = {
@@ -60,3 +63,17 @@ def create_group_with_permissions(user_type):
             except ContentType.DoesNotExist:
                 log.exception("ContentType não encontrado)")
     return group
+
+
+class IsOwnerOrReadOnly(BasePermission):
+    """
+    Permissão customizada para permitir que apenas os donos de um objeto possam editá-lo.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Permissões de leitura são permitidas para qualquer requisição
+        if request.method in SAFE_METHODS:
+            return True
+
+        # Permissões de escrita são permitidas apenas para o dono do objeto
+        return obj.user == request.user
