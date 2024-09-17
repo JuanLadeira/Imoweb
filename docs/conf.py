@@ -28,7 +28,7 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = "core"
+project = "IMOWEB project"
 copyright = """2024, juan"""
 author = "juan"
 
