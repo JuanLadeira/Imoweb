@@ -174,7 +174,8 @@ force-single-line = true
 
 [tool.taskipy.tasks]
 build = "docker compose -f local.yml up --build"
-up = "docker compose -f local.yml up "
+migrate = "docker compose -f local.yml run --rm django python manage.py migrate"
+up = "task migrate && docker compose -f local.yml up "
 down = "docker compose -f local.yml down"
 reset_db = "docker compose -f local.yml run --rm django python manage.py reset_db && docker compose -f local.yml run --rm django python manage.py makemigrations && docker compose -f local.yml up "
 ruff = "docker compose -f local.yml run --rm django ruff check --fix"
@@ -182,5 +183,6 @@ manage = "docker compose -f local.yml run --rm django python manage.py"
 format = 'docker compose -f local.yml run --rm django python -m blue . --diff && isort .'
 test = "docker compose -f local.yml run --rm django pytest -vv -s --cov=core --cov-report=term-missing --cov-report=html"
 logs = "docker compose -f local.yml logs"
-docs = "docker compose -f docs.yml up --build "
+docs = "docker compose -f docs.yml up --build -d"
+docsl = "docker compose -f docs.yml logs --follow"
 apidocs = "docker compose -f docs.yml run --rm docs make apidocs"

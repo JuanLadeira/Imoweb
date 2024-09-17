@@ -37,7 +37,7 @@ Utilize a árvore de conteúdo (toctree) para navegar facilmente entre as seçõ
 
 
 .. toctree::
-   :maxdepth: 2 
+   :maxdepth: 4
 
    config
    core
