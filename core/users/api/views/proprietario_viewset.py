@@ -10,6 +10,9 @@ from core.users.api.serializers.proprietario_serializer import ProprietarioGetSe
 from core.users.api.serializers.proprietario_serializer import (
     ProprietarioPostSerializer,
 )
+from core.users.api.serializers.proprietario_serializer import (
+    ProprietarioUpdateSerializer,
+)
 from core.users.models import Proprietario
 
 logger = getLogger("django")
@@ -21,6 +24,7 @@ class ProprietarioViewSet(viewsets.ModelViewSet):
     Endpoint de Proprietários
     """
 
+    queryset = Proprietario.objects.all()
     item_name = "Proprietário"
     plural_item_name = "Proprietários"
     permission_classes = [
@@ -29,11 +33,18 @@ class ProprietarioViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        return Proprietario.objects.all()
+        user = self.request.user
+        if user.is_proprietario:
+            return self.queryset.filter(user=user)
+        if user.is_agente:
+            return self.queryset.all()
+        return self.queryset.none()
 
     def get_serializer_class(self):
-        if self.request.method in ["GET"]:
+        if self.request.method in {"GET"}:
             return ProprietarioGetSerializer
+        if self.request.method in {"PUT", "PATCH"}:
+            return ProprietarioUpdateSerializer
         return ProprietarioPostSerializer
 
     @extend_schema(

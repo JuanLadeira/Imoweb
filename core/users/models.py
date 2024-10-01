@@ -1,10 +1,8 @@
-from enum import Enum
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class UserType(Enum):
+class UserType(models.TextChoices):
     """
     Enumeração que representa os diferentes tipos de usuário no sistema.
 
@@ -29,34 +27,9 @@ class UserType(Enum):
 
     """
 
-    PROPRIETARIO = ("proprietario", "Proprietário")
-    AGENTE = ("agente", "Agente Imobiliário")
-    INQUILINO = ("inquilino", "Inquilino")
-
-    def __init__(self, value, display_name):
-        """
-        Inicializa um valor do enum com o valor interno e o nome legível.
-
-        Args:
-            value (str): O valor interno que será armazenado no banco de dados.
-            display_name (str): O nome legível que será exibido para os usuários.
-        """
-        self._value_ = value
-        self.display_name = display_name
-
-    @classmethod
-    def choices(cls):
-        """
-        Gera uma lista de tuplas para uso em campos de escolha de modelos Django.
-
-        A lista de tuplas é composta por pares (valor, nome legível) onde:
-        - valor é o valor interno do enum.
-        - nome legível é a string formatada para exibição.
-
-        Returns:
-            list of tuple: Uma lista de tuplas que pode ser usada para definir o campo `choices` em modelos Django.
-        """
-        return [(e.value, e.display_name) for e in cls]
+    PROPRIETARIO = "proprietario", "Proprietário"
+    AGENTE = "agente", "Agente Imobiliário"
+    INQUILINO = "inquilino", "Inquilino"
 
 
 class User(AbstractUser):
@@ -68,7 +41,7 @@ class User(AbstractUser):
 
     tipo = models.CharField(
         max_length=20,
-        choices=UserType.choices(),
+        choices=UserType.choices,
         default=UserType.PROPRIETARIO.value,
     )
     endereco = models.CharField(max_length=255, blank=True)
@@ -89,11 +62,39 @@ class User(AbstractUser):
             str: O nome legível do tipo de usuário. Retorna "Tipo desconhecido" se o valor não for encontrado.
         """
         matching_types = [
-            user_type.display_name
-            for user_type in UserType
-            if user_type.value == self.tipo
+            user_type.label for user_type in UserType if user_type.value == self.tipo
         ]
         return matching_types[0] if matching_types else "Tipo desconhecido"
+
+    @property
+    def is_proprietario(self) -> bool:
+        """
+        Verifica se o usuário é um proprietário.
+
+        Returns:
+            bool: True se o usuário for um proprietário, False caso contrário.
+        """
+        return self.tipo == UserType.PROPRIETARIO.value
+
+    @property
+    def is_agente(self) -> bool:
+        """
+        Verifica se o usuário é um agente imobiliário.
+
+        Returns:
+            bool: True se o usuário for um agente imobiliário, False caso contrário.
+        """
+        return self.tipo == UserType.AGENTE.value
+
+    @property
+    def is_inquilino(self) -> bool:
+        """
+        Verifica se o usuário é um inquilino.
+
+        Returns:
+            bool: True se o usuário for um inquilino, False caso contrário.
+        """
+        return self.tipo == UserType.INQUILINO.value
 
 
 class Proprietario(models.Model):
@@ -117,11 +118,18 @@ class Proprietario(models.Model):
     """
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name=UserType.PROPRIETARIO.value
+        User,
+        on_delete=models.CASCADE,
+        related_name=UserType.PROPRIETARIO.value,
+        primary_key=True,
     )
 
     def __str__(self) -> str:
         return f"Proprietario {self.user.__str__()}"
+
+    @property
+    def id(self):
+        return self.user.id
 
 
 class AgenteImobiliario(models.Model):
@@ -150,11 +158,18 @@ class AgenteImobiliario(models.Model):
     """
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name=UserType.AGENTE.value
+        User,
+        on_delete=models.CASCADE,
+        related_name=UserType.AGENTE.value,
+        primary_key=True,
     )
 
     def __str__(self) -> str:
         return f"Agente {self.user.__str__()}"
+
+    @property
+    def id(self):
+        return self.user.id
 
 
 class Inquilino(models.Model):
@@ -183,8 +198,15 @@ class Inquilino(models.Model):
     """
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name=UserType.INQUILINO.value
+        User,
+        on_delete=models.CASCADE,
+        related_name=UserType.INQUILINO.value,
+        primary_key=True,
     )
 
     def __str__(self) -> str:
         return f"Inquilino {self.user.__str__()}"
+
+    @property
+    def id(self):
+        return self.user.id

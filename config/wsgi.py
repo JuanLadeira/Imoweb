@@ -1,16 +1,16 @@
 # ruff: noqa
 """
-WSGI config for core project.
+Configuração WSGI para o projeto core.
 
-This module contains the WSGI application used by Django's development server
-and any production WSGI deployments. It should expose a module-level variable
-named ``application``. Django's ``runserver`` and ``runfcgi`` commands discover
-this application via the ``WSGI_APPLICATION`` setting.
+Este módulo contém a aplicação WSGI usada pelo servidor de desenvolvimento do Django
+e por qualquer implantação WSGI de produção. Ele deve expor uma variável de nível de módulo
+chamada ``application``. Os comandos ``runserver`` e ``runfcgi`` do Django descobrem
+esta aplicação através da configuração ``WSGI_APPLICATION``.
 
-Usually you will have the standard Django WSGI application here, but it also
-might make sense to replace the whole Django WSGI application with a custom one
-that later delegates to the Django one. For example, you could introduce WSGI
-middleware here, or combine a Django application with an application of another
+Normalmente, você terá a aplicação WSGI padrão do Django aqui, mas também pode fazer sentido
+substituir toda a aplicação WSGI do Django por uma personalizada
+que posteriormente delega para a aplicação do Django. Por exemplo, você poderia introduzir
+middleware WSGI aqui ou combinar uma aplicação Django com uma aplicação de outro
 framework.
 
 """

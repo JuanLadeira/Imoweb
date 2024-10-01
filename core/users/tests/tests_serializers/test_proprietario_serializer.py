@@ -7,6 +7,9 @@ from core.users.api.serializers.proprietario_serializer import ProprietarioGetSe
 from core.users.api.serializers.proprietario_serializer import (
     ProprietarioPostSerializer,
 )
+from core.users.api.serializers.proprietario_serializer import (
+    ProprietarioUpdateSerializer,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +40,7 @@ class TestProprietarioPostSerializer:
             "password"
         ), "Senha deveria ter sido criptografada"
 
-    def test_update_proprietario_post_serializer(
-        self, user_factory, proprietario_factory
-    ):
+    def test_update_proprietario_serializer(self, user_factory, proprietario_factory):
         proprietario = proprietario_factory()
         user_new = user_factory.build()
 
@@ -53,7 +54,7 @@ class TestProprietarioPostSerializer:
             "endereco": user_new.get("endereco"),
         }
 
-        serializer = ProprietarioPostSerializer
+        serializer = ProprietarioUpdateSerializer
         serializer = serializer(proprietario, data=data, partial=True)
         assert serializer.is_valid(), serializer.errors
         proprietario = serializer.save()

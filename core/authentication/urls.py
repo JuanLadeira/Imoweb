@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
 
 from core.authentication.views import forgot_password_view
 from core.authentication.views import login_view
@@ -35,3 +36,4 @@ urlpatterns = [
         name="reset_password",
     ),
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)
