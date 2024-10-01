@@ -10,6 +10,9 @@ from core.users.api.serializers.proprietario_serializer import ProprietarioGetSe
 from core.users.api.serializers.proprietario_serializer import (
     ProprietarioPostSerializer,
 )
+from core.users.api.serializers.proprietario_serializer import (
+    ProprietarioUpdateSerializer,
+)
 from core.users.models import Proprietario
 
 logger = getLogger("django")
@@ -38,8 +41,10 @@ class ProprietarioViewSet(viewsets.ModelViewSet):
         return self.queryset.none()
 
     def get_serializer_class(self):
-        if self.request.method in ["GET"]:
+        if self.request.method in {"GET"}:
             return ProprietarioGetSerializer
+        if self.request.method in {"PUT", "PATCH"}:
+            return ProprietarioUpdateSerializer
         return ProprietarioPostSerializer
 
     @extend_schema(

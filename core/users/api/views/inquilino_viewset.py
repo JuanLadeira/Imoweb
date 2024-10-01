@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 from core.users.api.serializers.inquilino_serializer import InquilinoGetSerializer
 from core.users.api.serializers.inquilino_serializer import InquilinoPostSerializer
+from core.users.api.serializers.inquilino_serializer import InquilinoUpdateSerializer
 from core.users.models import Inquilino
 
 logger = getLogger("django")
@@ -43,8 +44,10 @@ class InquilinoViewSet(viewsets.ModelViewSet):
         return self.queryset.none()
 
     def get_serializer_class(self):
-        if self.request.method in ["GET"]:
+        if self.request.method in {"GET"}:
             return InquilinoGetSerializer
+        if self.request.method in {"PUT", "PATCH"}:
+            return InquilinoUpdateSerializer
         return InquilinoPostSerializer
 
     @extend_schema(

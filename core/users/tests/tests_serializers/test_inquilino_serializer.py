@@ -5,6 +5,7 @@ from django.forms import model_to_dict
 
 from core.users.api.serializers.inquilino_serializer import InquilinoGetSerializer
 from core.users.api.serializers.inquilino_serializer import InquilinoPostSerializer
+from core.users.api.serializers.inquilino_serializer import InquilinoUpdateSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ class TestInquilinoPostSerializer:
             "password"
         ), "Senha deveria ter sido criptografada"
 
-    def test_update_inquilino_post_serializer(self, user_factory, inquilino_factory):
+    def test_update_inquilino_serializer(self, user_factory, inquilino_factory):
         inquilino = inquilino_factory()
         user_new = user_factory.build()
 
@@ -49,7 +50,7 @@ class TestInquilinoPostSerializer:
             "endereco": user_new.get("endereco"),
         }
 
-        serializer = InquilinoPostSerializer
+        serializer = InquilinoUpdateSerializer
         serializer = serializer(inquilino, data=data, partial=True)
         assert serializer.is_valid(), serializer.errors
         inquilino = serializer.save()

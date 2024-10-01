@@ -6,21 +6,22 @@ from rest_framework import serializers
 
 from core.users.api.serializers.user_serializer import UserSerializer
 from core.users.models import Proprietario
-from core.users.utils import get_especific_user_data
 
 logger = getLogger("django")
 
 
 class ProprietarioPostSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=False)
-    password = serializers.CharField(required=False)
-    password2 = serializers.CharField(required=False)
-    first_name = serializers.CharField(required=False)
-    last_name = serializers.CharField(required=False)
-    telefone = serializers.CharField(required=False)
-    email = serializers.EmailField(required=False)
-    foto = serializers.ImageField(required=False)
-    endereco = serializers.CharField(required=False)
+    username = serializers.CharField(required=False, source="user.username")
+    password = serializers.CharField(required=False, source="user.password")
+    password2 = serializers.CharField(
+        required=False, source="user.password2", write_only=True
+    )
+    first_name = serializers.CharField(required=False, source="user.first_name")
+    last_name = serializers.CharField(required=False, source="user.last_name")
+    telefone = serializers.CharField(required=False, source="user.telefone")
+    email = serializers.EmailField(required=False, source="user.email")
+    foto = serializers.ImageField(required=False, source="user.foto")
+    endereco = serializers.CharField(required=False, source="user.endereco")
 
     class Meta:
         model = Proprietario
@@ -38,7 +39,7 @@ class ProprietarioPostSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data: dict[str, Any]):
-        user_data, validated_data = get_especific_user_data(validated_data)
+        user_data = validated_data.pop("user")
         user_data["tipo"] = "proprietario"
         user_serializer = UserSerializer(data=user_data)
         if user_serializer.is_valid(raise_exception=True):
@@ -46,9 +47,33 @@ class ProprietarioPostSerializer(serializers.ModelSerializer):
 
         return Proprietario.objects.create(user=user, **validated_data)
 
+    def to_representation(self, instance):
+        serializer = ProprietarioGetSerializer(instance)
+        return serializer.data
+
+
+class ProprietarioUpdateSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(required=False, source="user.first_name")
+    last_name = serializers.CharField(required=False, source="user.last_name")
+    telefone = serializers.CharField(required=False, source="user.telefone")
+    email = serializers.EmailField(required=False, source="user.email")
+    foto = serializers.ImageField(required=False, source="user.foto")
+    endereco = serializers.CharField(required=False, source="user.endereco")
+
+    class Meta:
+        model = Proprietario
+        fields = [
+            "first_name",
+            "last_name",
+            "telefone",
+            "email",
+            "foto",
+            "endereco",
+        ]
+
     @transaction.atomic
     def update(self, instance, validated_data):
-        user_data, validated_data = get_especific_user_data(validated_data)
+        user_data = validated_data.pop("user")
 
         user = instance.user
         user_serializer = UserSerializer(

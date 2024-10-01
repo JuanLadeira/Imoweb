@@ -39,7 +39,7 @@ def create_group_with_permissions(user_type):
     """
     Verifica se um grupo já existe e, se não existir, cria o grupo e atribui as permissões específicas a ele.
     """
-    group_name = user_type.display_name
+    group_name = user_type.label
     group, created = Group.objects.get_or_create(name=group_name)
 
     if created:

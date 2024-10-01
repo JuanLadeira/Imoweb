@@ -9,6 +9,9 @@ from core.users.api.serializers.agente_imobiliario_serializer import (
 from core.users.api.serializers.agente_imobiliario_serializer import (
     AgenteImobiliarioPostSerializer,
 )
+from core.users.api.serializers.agente_imobiliario_serializer import (
+    AgenteImobiliarioUpdateSerializer,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +42,7 @@ class TestAgenteImobiliarioPostSerializer:
             "password"
         ), "Senha deveria ter sido criptografada"
 
-    def test_update_agente_imobiliario_post_serializer(
+    def test_update_agente_imobiliario_update_serializer(
         self, user_factory, agente_imobiliario_factory
     ):
         agente = agente_imobiliario_factory()
@@ -55,7 +58,7 @@ class TestAgenteImobiliarioPostSerializer:
             "endereco": user_new.get("endereco"),
         }
 
-        serializer = AgenteImobiliarioPostSerializer
+        serializer = AgenteImobiliarioUpdateSerializer
         serializer = serializer(agente, data=user_data, partial=True)
         assert serializer.is_valid(), serializer.errors
         agente = serializer.save()

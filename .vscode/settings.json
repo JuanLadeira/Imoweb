@@ -2,5 +2,8 @@
     "workbench.editor.defaultBinaryEditor": "",
     "workbench.editor.enablePreview": true,
     "python.languageServer": "Pylance",
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.ruff": true
+    }
 }

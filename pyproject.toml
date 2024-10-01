@@ -148,6 +148,7 @@ ignore = [
   "UP038", # Checks for uses of isinstance/issubclass that take a tuple
   "ISC001", # Checks for uses of isinstance/issubclass that take a tuple
   "COM812", # Checks for uses of isinstance/issubclass that take a tuple
+  "PLR6301",
           # of types for comparison.
           # Deactivated because it can make the code slow:
           # https://github.com/astral-sh/ruff/issues/7871
@@ -173,8 +174,9 @@ line-ending = "auto"
 force-single-line = true
 
 [tool.taskipy.tasks]
-build = "docker compose -f local.yml up --build"
+build = "sudo docker compose -f local.yml up --build"
 migrate = "docker compose -f local.yml run --rm django python manage.py migrate"
+makemigrations = "docker compose -f local.yml run --rm django python manage.py makemigrations"
 up = "task migrate && docker compose -f local.yml up "
 down = "docker compose -f local.yml down"
 reset_db = "docker compose -f local.yml run --rm django python manage.py reset_db && docker compose -f local.yml run --rm django python manage.py makemigrations && docker compose -f local.yml up "

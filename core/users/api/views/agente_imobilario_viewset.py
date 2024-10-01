@@ -12,6 +12,9 @@ from core.users.api.serializers.agente_imobiliario_serializer import (
 from core.users.api.serializers.agente_imobiliario_serializer import (
     AgenteImobiliarioPostSerializer,
 )
+from core.users.api.serializers.agente_imobiliario_serializer import (
+    AgenteImobiliarioUpdateSerializer,
+)
 from core.users.models import AgenteImobiliario
 
 logger = getLogger("django")
@@ -39,8 +42,10 @@ class AgenteImobiliarioViewSet(viewsets.ModelViewSet):
         return query.none()
 
     def get_serializer_class(self):
-        if self.request.method in ["GET"]:
+        if self.request.method in {"GET"}:
             return AgenteImobiliarioGetSerializer
+        if self.request.method in {"PUT", "PATCH"}:
+            return AgenteImobiliarioUpdateSerializer
         return AgenteImobiliarioPostSerializer
 
     @extend_schema(
