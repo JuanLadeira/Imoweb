@@ -15,15 +15,20 @@ class Estado(models.Model):
 
 
 class Cidade(models.Model):
-    nome = models.CharField(max_length=100)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nome
+        return f"{self.nome} - {self.estado.uf}"
+
+
+def upload_foto_to(instance, filename):
+    return f"imoveis/{instance.imovel.endereco}/{filename}"
 
 
 class Foto(models.Model):
-    foto = models.ImageField(upload_to="fotos", null=True, blank=True)
+    imovel = models.ForeignKey("Imovel", on_delete=models.CASCADE, related_name="fotos")
+    foto = models.ImageField(upload_to=upload_foto_to, null=True, blank=True)
 
     def __str__(self):
         return self.foto
@@ -53,7 +58,7 @@ class TipoDeImovel(models.Model):
     tipo = models.CharField(max_length=1, choices=ImovelTipo.choices)
 
     def __str__(self):
-        return self.nome
+        return f"{self.nome} - {self.get_tipo_display()}"
 
 
 class Imovel(models.Model):
@@ -63,9 +68,6 @@ class Imovel(models.Model):
     cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE, related_name="imoveis")
     criado_por = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="imoveis_criados"
-    )
-    foto = models.ForeignKey(
-        Foto, on_delete=models.CASCADE, related_name="imoveis_fotos"
     )
     tipo = models.ForeignKey(
         TipoDeImovel, on_delete=models.CASCADE, related_name="imoveis_tipo"

@@ -4,6 +4,6 @@
     "python.languageServer": "Pylance",
     "python.analysis.typeCheckingMode": "off",
     "editor.codeActionsOnSave": {
-        "source.fixAll.ruff": true
+        "source.fixAll.ruff": "explicit"
     }
 }
