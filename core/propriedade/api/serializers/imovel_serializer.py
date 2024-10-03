@@ -40,31 +40,6 @@ class ImovelPostSerializer(serializers.ModelSerializer):
         ]
 
 
-class ImovelUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Imovel
-        fields = [
-            "proprietario",
-            "cidade",
-            "tipo",
-            "endereco",
-            "pais",
-            "cep",
-            "titulo",
-            "descricao",
-            "tipo_de_contrato",
-            "status",
-            "preco",
-            "preco_locacao",
-            "area",
-            "quartos",
-            "banheiros",
-            "vagas",
-            "iptu",
-            "condominio",
-        ]
-
-
 class ImovelGetSerializer(serializers.ModelSerializer):
     cidade = serializers.StringRelatedField()
     proprietario = serializers.StringRelatedField()
