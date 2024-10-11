@@ -7,12 +7,28 @@ from django.test import Client
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
 
+from core.propriedade.tests.factories import CidadeFactory
+from core.propriedade.tests.factories import EstadoFactory
+from core.propriedade.tests.factories import FotoFactory
+from core.propriedade.tests.factories import ImovelFactory
+from core.propriedade.tests.factories import TipoDeImovelFactory
 from core.users.tests.factories import AgenteImobiliarioFactory
 from core.users.tests.factories import InquilinoFactory
 from core.users.tests.factories import ProprietarioFactory
 from core.users.tests.factories import UserFactory
 
 log = logging.getLogger(__name__)
+
+
+register(UserFactory)
+register(ProprietarioFactory)
+register(InquilinoFactory)
+register(AgenteImobiliarioFactory)
+register(ImovelFactory)
+register(EstadoFactory)
+register(CidadeFactory)
+register(TipoDeImovelFactory)
+register(FotoFactory)
 
 
 @pytest.fixture(autouse=True)
@@ -138,9 +154,3 @@ def api_client():
 @pytest.fixture()
 def client():
     return Client()
-
-
-register(UserFactory)
-register(ProprietarioFactory)
-register(InquilinoFactory)
-register(AgenteImobiliarioFactory)

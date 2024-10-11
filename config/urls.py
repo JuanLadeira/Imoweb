@@ -20,6 +20,7 @@ urlpatterns += [
     # API base url
     path("api/users/", include("core.users.urls")),
     path("api/auth/", include("core.authentication.urls")),
+    path("api/propriedades/", include("core.propriedade.urls")),
     # DRF auth token
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path(

@@ -7,8 +7,11 @@ from core.users.models import User
 
 
 class Estado(models.Model):
-    nome = models.CharField(max_length=100)
-    uf = models.CharField(max_length=2)
+    nome = models.CharField(max_length=100, unique=True)
+    uf = models.CharField(max_length=2, unique=True)
+
+    class Meta:
+        verbose_name_plural = "Estados"
 
     def __str__(self):
         return self.nome
@@ -17,6 +20,10 @@ class Estado(models.Model):
 class Cidade(models.Model):
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     nome = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = "Cidades"
+        unique_together = ("estado", "nome")
 
     def __str__(self):
         return f"{self.nome} - {self.estado.uf}"
@@ -29,6 +36,9 @@ def upload_foto_to(instance, filename):
 class Foto(models.Model):
     imovel = models.ForeignKey("Imovel", on_delete=models.CASCADE, related_name="fotos")
     foto = models.ImageField(upload_to=upload_foto_to, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Fotos"
 
     def __str__(self):
         return self.foto
@@ -57,13 +67,16 @@ class TipoDeImovel(models.Model):
     nome = models.CharField(max_length=100)
     tipo = models.CharField(max_length=1, choices=ImovelTipo.choices)
 
+    class Meta:
+        verbose_name_plural = "Tipos de Imóveis"
+
     def __str__(self):
         return f"{self.nome} - {self.get_tipo_display()}"
 
 
 class Imovel(models.Model):
     proprietario = models.ForeignKey(
-        Proprietario, on_delete=models.CASCADE, related_name="propriedades"
+        Proprietario, on_delete=models.CASCADE, related_name="propriedades", null=True
     )
     cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE, related_name="imoveis")
     criado_por = models.ForeignKey(
@@ -100,6 +113,9 @@ class Imovel(models.Model):
     condominio = models.DecimalField(
         max_digits=10, decimal_places=2, help_text="em R$", null=True
     )
+
+    class Meta:
+        verbose_name_plural = "Imóveis"
 
     def __str__(self):
         return self.titulo

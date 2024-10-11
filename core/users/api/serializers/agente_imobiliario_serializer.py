@@ -1,6 +1,7 @@
 from logging import getLogger
 
 from django.db import transaction
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from core.users.api.serializers.user_serializer import UserSerializer
@@ -109,8 +110,10 @@ class AgenteImobiliarioGetSerializer(serializers.ModelSerializer):
             "endereco",
         ]
 
+    @extend_schema_field(serializers.CharField)
     def get_nome(self, obj):
         return obj.user.get_full_name()
 
+    @extend_schema_field(serializers.IntegerField)
     def get_user_id(self, obj):
         return obj.user.id
