@@ -19,7 +19,7 @@ class TestUpdateEstadoEndpoint:
         Retorna a url do endpoint
 
         Args:
-            estado_id (_type_, optional): recebe um id de um agente imobiliário. Defaults to None.
+            estado_id (_type_, optional): recebe um id de um estado. Defaults to None.
 
         """
 
