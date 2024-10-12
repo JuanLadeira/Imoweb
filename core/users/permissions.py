@@ -40,7 +40,7 @@ PROPRIETARIO_PERMISSIONS = {
     "propriedade.Cidade": ["view"],
     "propriedade.Estado": ["view"],
     "propriedade.TipoDeImovel": ["view"],
-    "propriedade.Foto": ["view", "add", "change", "delete"],
+    "propriedade.Foto": ["view"],
 }
 
 PERMISSIONS_MAP = {

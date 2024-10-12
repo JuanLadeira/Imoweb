@@ -146,7 +146,6 @@ class TestUpdateEstadoEndpoint:
         estado = estado_factory()
         estado_update = estado_factory.build()
         estado_data = model_to_dict(estado_update)
-        estado = estado_factory()
         url = self.get_endpoint(estado.id)
 
         data = {

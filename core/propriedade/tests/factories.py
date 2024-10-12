@@ -18,15 +18,6 @@ from core.users.tests.factories import UserFactory
 fake = Faker()
 
 
-class CidadeFactory(DjangoModelFactory):
-    nome = FactoryFaker("city", locale="pt_BR")
-    estado = SubFactory("core.propriedade.tests.factories.EstadoFactory")
-
-    class Meta:
-        model = Cidade
-        django_get_or_create = ("nome",)
-
-
 class EstadoFactory(DjangoModelFactory):
     nome = FactoryFaker("state")
     uf = FactoryFaker("state_abbr")
@@ -34,6 +25,21 @@ class EstadoFactory(DjangoModelFactory):
     class Meta:
         model = Estado
         django_get_or_create = ("nome", "uf")
+
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        # Ensure the 'nome' field is unique by appending a random number
+        kwargs["nome"] = f"{kwargs['nome']} {fake.random_int(min=1, max=1000)}"
+        return super()._create(model_class, *args, **kwargs)
+
+
+class CidadeFactory(DjangoModelFactory):
+    nome = FactoryFaker("city", locale="pt_BR")
+    estado = SubFactory(EstadoFactory)
+
+    class Meta:
+        model = Cidade
+        django_get_or_create = ("nome",)
 
 
 class TipoDeImovelFactory(DjangoModelFactory):
