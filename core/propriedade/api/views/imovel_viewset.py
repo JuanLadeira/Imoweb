@@ -1,6 +1,7 @@
 from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
 from core.propriedade.api.serializers.imovel_serializer import ImovelGetSerializer
 from core.propriedade.api.serializers.imovel_serializer import ImovelPostSerializer
@@ -8,7 +9,9 @@ from core.propriedade.models import Imovel
 
 
 class ImovelViewSet(viewsets.ModelViewSet):
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     queryset = Imovel.objects.all()
+
     item_name = "Imóvel"
     plural_item_name = "Imóveis"
 

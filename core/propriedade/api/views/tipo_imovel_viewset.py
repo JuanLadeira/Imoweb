@@ -1,6 +1,7 @@
 from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
 from core.propriedade.api.serializers.tipo_de_imovel_serializer import (
     TipoDeImovelGetSerializer,
@@ -13,6 +14,8 @@ from core.propriedade.models import TipoDeImovel
 
 class TipoDeImovelViewSet(viewsets.ModelViewSet):
     queryset = TipoDeImovel.objects.all()
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+
     item_name = "Tipo de Imovel"
     plural_item_name = "Tipo de imóveis"
 

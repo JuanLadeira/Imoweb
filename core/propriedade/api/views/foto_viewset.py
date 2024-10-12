@@ -1,5 +1,6 @@
 from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
 from config.views import CreateUpdateDestroyViewSet
 from core.propriedade.api.serializers.foto_serializer import FotoPostSerializer
@@ -7,6 +8,7 @@ from core.propriedade.models import Foto
 
 
 class FotoViewSet(CreateUpdateDestroyViewSet):
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     serializer_class = FotoPostSerializer
     queryset = Foto.objects.all()
 

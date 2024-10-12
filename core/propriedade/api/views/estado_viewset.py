@@ -1,5 +1,6 @@
 from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
 from config.views import CreateUpdateDestroyViewSet
 from core.propriedade.api.serializers.estado_serializer import EstadoPostSerializer
@@ -7,6 +8,7 @@ from core.propriedade.models import Estado
 
 
 class EstadoViewSet(CreateUpdateDestroyViewSet):
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     serializer_class = EstadoPostSerializer
     queryset = Estado.objects.all()
 

@@ -18,14 +18,29 @@ AGENTE_IMOBILIARIO_PERMISSIONS = {
     "users.Inquilino": ["view", "add", "change", "delete"],
     "users.AgenteImobiliario": ["view", "change"],
     "users.User": ["change_self"],  # Permissão para alterar a si mesmo
+    "propriedade.Imovel": ["view", "add", "change", "delete"],
+    "propriedade.Cidade": ["view", "add", "change", "delete"],
+    "propriedade.Estado": ["view", "add", "change", "delete"],
+    "propriedade.TipoDeImovel": ["view", "add", "change", "delete"],
+    "propriedade.Foto": ["view", "add", "change", "delete"],
 }
 
 INQUILINO_PERMISSIONS = {
     "users.User": ["change_self", "view_self"],  # Permissão para alterar a si mesmo
+    "propriedade.Imovel": ["view"],
+    "propriedade.Cidade": ["view"],
+    "propriedade.Estado": ["view"],
+    "propriedade.TipoDeImovel": ["view"],
+    "propriedade.Foto": ["view"],
 }
 
 PROPRIETARIO_PERMISSIONS = {
     "users.User": ["change_self", "view_self"],  # Permissão para alterar a si mesmo
+    "propriedade.Imovel": ["view", "add", "change", "delete"],
+    "propriedade.Cidade": ["view"],
+    "propriedade.Estado": ["view"],
+    "propriedade.TipoDeImovel": ["view"],
+    "propriedade.Foto": ["view", "add", "change", "delete"],
 }
 
 PERMISSIONS_MAP = {

@@ -7,6 +7,7 @@ from core.propriedade.models import Cidade
 from core.propriedade.models import Imovel
 from core.propriedade.models import TipoDeImovel
 from core.users.models import Proprietario
+from core.users.models import User
 
 
 class ImovelPostSerializer(serializers.ModelSerializer):
@@ -15,11 +16,13 @@ class ImovelPostSerializer(serializers.ModelSerializer):
     )
     cidade = serializers.PrimaryKeyRelatedField(queryset=Cidade.objects.all())
     tipo = serializers.PrimaryKeyRelatedField(queryset=TipoDeImovel.objects.all())
+    criado_por = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model = Imovel
         fields = [
             "proprietario",
+            "criado_por",
             "cidade",
             "tipo",
             "endereco",

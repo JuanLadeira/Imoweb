@@ -1,5 +1,6 @@
 from drf_spectacular.utils import OpenApiResponse
 from drf_spectacular.utils import extend_schema
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
 from config.views import CreateUpdateDestroyViewSet
 from core.propriedade.api.serializers.cidade_serializer import CidadePostSerializer
@@ -7,6 +8,7 @@ from core.propriedade.models import Cidade
 
 
 class CidadeViewSet(CreateUpdateDestroyViewSet):
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     serializer_class = CidadePostSerializer
     queryset = Cidade.objects.all()
 
