@@ -7,45 +7,47 @@ log = getLogger(__name__)
 
 
 @pytest.mark.django_db()
-class TestUpdateInquilinoEndpoint:
-    endpoint = "/api/users/inquilinos/"
+class TestUpdateProprietarioEndpoint:
+    endpoint = "/api/users/proprietarios/"
 
     @classmethod
-    def get_endpoint(cls, inquilino_id=None):
+    def get_endpoint(cls, proprietario_id=None):
         """
         get_endpoint
 
         Retorna a url do endpoint
 
         Args:
-            inquilino_id (_type_, optional): recebe um id de um agente imobiliário. Defaults to None.
+            proprietario_id (_type_, optional): recebe um id de um agente imobiliário. Defaults to None.
 
         """
 
-        if inquilino_id:
-            return f"{cls.endpoint}{inquilino_id}/"
+        if proprietario_id:
+            return f"{cls.endpoint}{proprietario_id}/"
         return cls.endpoint
 
-    def test_agente_super_user_update_inquilino(self, agente_logado, inquilino_factory):
+    def test_agente_super_user_update_proprietario(
+        self, agente_logado, proprietario_factory
+    ):
         """
-        test_agente_super_user_update_inquilino
+        test_agente_super_user_update_proprietario
 
-        Testa a atualização de inquilino por um super usuário
+        Testa a atualização de proprietario por um super usuário
 
         Args:
             agente_logado (dict): Retorna um dict com os dados do agente logado
-            inquilino_factory (AgenteImobiliarioFactory): Factory de inquilino imobiliários
+            proprietario_factory (AgenteImobiliarioFactory): Factory de proprietario imobiliários
         """
         dados = agente_logado
         agente = dados["agente"]
         agente.user.is_superuser = True
         agente.user.save()
 
-        inquilino = inquilino_factory()
+        proprietario = proprietario_factory()
 
         api_client = dados["api_client"]
 
-        url = self.get_endpoint(inquilino.id)
+        url = self.get_endpoint(proprietario.id)
 
         data = {
             "first_name": "Teste",
@@ -58,22 +60,22 @@ class TestUpdateInquilinoEndpoint:
         )
         assert response.status_code == HTTPStatus.OK, response.status_code
 
-    def test_agente_update_inquilino(self, agente_logado, inquilino_factory):
+    def test_agente_update_proprietario(self, agente_logado, proprietario_factory):
         """
-        test_agente_update_inquilino
+        test_agente_update_proprietario
 
-        Testa a atualização de inquilino por um agente
+        Testa a atualização de proprietario por um agente
 
         Args:
 
             agente_logado (dict): Retorna um dict com os dados do agente logado
-            inquilino_factory (AgenteImobiliarioFactory): Factory de inquilino imobiliários
+            proprietario_factory (AgenteImobiliarioFactory): Factory de proprietario imobiliários
         """
         dados = agente_logado
         api_client = dados["api_client"]
 
-        inquilino = inquilino_factory()
-        url = self.get_endpoint(inquilino.id)
+        proprietario = proprietario_factory()
+        url = self.get_endpoint(proprietario.id)
 
         data = {
             "first_name": "Teste",
@@ -87,21 +89,21 @@ class TestUpdateInquilinoEndpoint:
 
         assert response.status_code == HTTPStatus.OK, response.status_code
 
-    def test_proprietario_update_inquilino(
-        self, proprietario_logado, inquilino_factory
+    def test_proprietario_update_proprietario(
+        self, proprietario_logado, proprietario_factory
     ):
         """
-        Testa a atualização de inquilino por um proprietário
+        Testa a atualização de proprietario por um proprietário
 
         Args:
             proprietario_logado (dict): Retorna um dict com os dados do proprietário logado
-            inquilino_factory (AgenteImobiliarioFactory): Factory de inquilino imobiliários
+            proprietario_factory (AgenteImobiliarioFactory): Factory de proprietario imobiliários
         """
         dados = proprietario_logado
         api_client = dados["api_client"]
-        inquilino = inquilino_factory()
+        proprietario = proprietario_factory()
 
-        url = self.get_endpoint(inquilino.id)
+        url = self.get_endpoint(proprietario.id)
 
         data = {
             "first_name": "Teste",
@@ -115,21 +117,23 @@ class TestUpdateInquilinoEndpoint:
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
 
-    def test_inquilino_update_inquilino(self, inquilino_logado, inquilino_factory):
+    def test_inquilino_update_proprietario(
+        self, inquilino_logado, proprietario_factory
+    ):
         """
-        test_inquilino_update_inquilino
+        test_inquilino_update_proprietario
 
-        Testa a atualização de inquilino por um inquilino
+        Testa a atualização de proprietario por um proprietario
 
         Args:
-            inquilino_logado (dict): Retorna um dict com os dados do inquilino logado
-            inquilino_factory (AgenteImobiliarioFactory): Factory de inquilino imobiliários
+            proprietario_logado (dict): Retorna um dict com os dados do proprietario logado
+            proprietario_factory (AgenteImobiliarioFactory): Factory de proprietario imobiliários
         """
         dados = inquilino_logado
         api_client = dados["api_client"]
 
-        inquilino = inquilino_factory()
-        url = self.get_endpoint(inquilino.id)
+        proprietario = proprietario_factory()
+        url = self.get_endpoint(proprietario.id)
 
         data = {
             "first_name": "Teste",
@@ -143,18 +147,18 @@ class TestUpdateInquilinoEndpoint:
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
 
-    def test_anonymous_update_inquilino(self, api_client, inquilino_factory):
+    def test_anonymous_update_proprietario(self, api_client, proprietario_factory):
         """
-        test_anonymous_update_inquilino
+        test_anonymous_update_proprietario
 
-        Testa a atualização de inquilino por um usuario anonimo
+        Testa a atualização de proprietario por um usuario anonimo
 
         Args:
             api_client (APIClient): Cliente da API
-            inquilino_factory (AgenteImobiliarioFactory): Factory de inquilino imobiliários
+            proprietario_factory (AgenteImobiliarioFactory): Factory de proprietario imobiliários
         """
-        inquilino = inquilino_factory()
-        url = self.get_endpoint(inquilino.id)
+        proprietario = proprietario_factory()
+        url = self.get_endpoint(proprietario.id)
 
         data = {
             "first_name": "Teste",

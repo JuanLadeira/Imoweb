@@ -155,3 +155,30 @@ class TestCreateFotoEndpoint:
         )
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_anonymous_create_foto(self, api_client, imovel_factory):
+        """
+        test_anonymous_create_Foto
+
+        testa a criação de uma Foto por um inquilino
+
+        Args:
+            api_client (_type_): Retorna um client
+            imovel_factory (ImovelFactory): Factory de Fotos
+        """
+        imovel = imovel_factory()
+
+        image_file = self.create_test_image_file()
+
+        data = {
+            "imovel": imovel.id,
+            "foto": image_file,
+        }
+
+        response = api_client.post(
+            self.endpoint,
+            data=data,
+            format="multipart",
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

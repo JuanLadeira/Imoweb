@@ -145,3 +145,31 @@ class TestCreateAgenteEndpoint:
         )
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_anonymous_create_agente(self, api_client, user_factory):
+        """
+        test_anonymous_create_agente
+
+        testa a criação de um agente por um usuario anonimo
+
+        Args:
+            inquilino_logado (dict): Retorna um dict com os dados do inquilino logado
+            user_factory (UserFactory): Factory de usuários
+        """
+        user = user_factory.build()
+
+        user_data = model_to_dict(user)
+
+        data = {
+            "username": user_data["username"],
+            "password": user_data["password"],
+            "password2": user_data["password"],
+        }
+
+        response = api_client.post(
+            self.endpoint,
+            data=data,
+            format="json",
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

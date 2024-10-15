@@ -124,3 +124,24 @@ class TestdeleteInquilinoEndpoint:
         )
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_anonymous_delete_inquilinos(self, api_client, inquilino_factory):
+        """
+        test_anonymous_delete_inquilinos
+
+        Testa a exclusão de um inquilino por um inquilino
+
+        Args:
+            api_client (APIClient): Cliente de API
+            inquilino_factory (inquilinoImobiliarioFactory): Factory de inquilinos imobiliários
+        """
+
+        inquilino = inquilino_factory()
+        url = self.get_endpoint(inquilino.id)
+
+        response = api_client.delete(
+            url,
+            format="json",
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

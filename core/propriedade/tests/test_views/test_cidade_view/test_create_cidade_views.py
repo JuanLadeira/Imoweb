@@ -149,3 +149,31 @@ class TestCreateCidadeEndpoint:
         )
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_anonymous_create_cidade(self, api_client, cidade_factory, estado_factory):
+        """
+        test_inquilino_create_cidade
+
+        testa a criação de uma cidade por um inquilino
+
+        Args:
+            api_client (_type_): Retorna um client
+            cidade_factory (cidadeFactory): Factory de cidades
+        """
+        cidade = cidade_factory.build()
+        estado = estado_factory()
+
+        cidade_data = model_to_dict(cidade)
+
+        data = {
+            "nome": cidade_data.get("nome"),
+            "estado": estado.id,
+        }
+
+        response = api_client.post(
+            self.endpoint,
+            data=data,
+            format="json",
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

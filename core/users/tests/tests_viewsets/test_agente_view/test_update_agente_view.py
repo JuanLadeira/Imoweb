@@ -146,3 +146,29 @@ class TestUpdateAgenteEndpoint:
         )
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_anonymous_update_agentes(self, api_client, agente_imobiliario_factory):
+        """
+        test_inquilino_update_agentes
+
+        Testa a atualização de agentes por um inquilino
+
+        Args:
+            api_client (ApiClient): Retorna um client
+            agente_imobiliario_factory (AgenteImobiliarioFactory): Factory de agentes imobiliários
+        """
+
+        agente_imobiliario = agente_imobiliario_factory()
+        url = self.get_endpoint(agente_imobiliario.id)
+
+        data = {
+            "first_name": "Teste",
+        }
+
+        response = api_client.patch(
+            url,
+            data=data,
+            format="json",
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

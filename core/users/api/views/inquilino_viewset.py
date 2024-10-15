@@ -31,6 +31,7 @@ class InquilinoViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         queryset = self.queryset.all()
+
         if user.is_inquilino:
             return queryset.filter(user=user)
 
@@ -41,7 +42,7 @@ class InquilinoViewSet(viewsets.ModelViewSet):
             # TODO! falta implementar a lógica de proprietario buscar somente seus inquilinos, ou fazer endpoint separado.
             return queryset.none()
 
-        return self.queryset.none()
+        return queryset.none()
 
     def get_serializer_class(self):
         if self.request.method in {"GET"}:

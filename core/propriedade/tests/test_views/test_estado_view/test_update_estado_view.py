@@ -45,7 +45,6 @@ class TestUpdateEstadoEndpoint:
         estado = estado_factory()
         estado_update = estado_factory.build()
         estado_data = model_to_dict(estado_update)
-        estado = estado_factory()
 
         api_client = dados["api_client"]
 
@@ -80,7 +79,6 @@ class TestUpdateEstadoEndpoint:
         estado = estado_factory()
         estado_update = estado_factory.build()
         estado_data = model_to_dict(estado_update)
-        estado = estado_factory()
         url = self.get_endpoint(estado.id)
 
         data = {
@@ -109,7 +107,6 @@ class TestUpdateEstadoEndpoint:
         estado = estado_factory()
         estado_update = estado_factory.build()
         estado_data = model_to_dict(estado_update)
-        estado = estado_factory()
 
         url = self.get_endpoint(estado.id)
 
@@ -156,3 +153,27 @@ class TestUpdateEstadoEndpoint:
         response = api_client.patch(url, data=data, format="json")
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_usuario_anonimo_update_estados(self, api_client, estado_factory):
+        """
+        test_usuario_anonimo_update_estados
+
+        Testa a atualização de estados por um usuário anônimo
+
+        Args:
+            api_client (APIClient): Cliente API não autenticado
+            (estado_factory): Factory de estados
+        """
+        estado = estado_factory()
+        estado_update = estado_factory.build()
+        estado_data = model_to_dict(estado_update)
+        url = self.get_endpoint(estado.id)
+
+        data = {
+            "nome": estado_data.get("nome"),
+            "uf": estado_data.get("uf"),
+        }
+
+        response = api_client.patch(url, data=data, format="json")
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

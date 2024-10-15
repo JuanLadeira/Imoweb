@@ -127,3 +127,24 @@ class TestRetrieveInquilinoEndpoint:
         )
 
         assert response.status_code == HTTPStatus.NOT_FOUND, response.status_code
+
+    def test_anonymous_retrieves_inquilinos(self, api_client, inquilino_factory):
+        """
+        test_anonymous_retrieves_inquilinos
+
+        Testa a recuperação de inquilinos por um usuario anonimo
+
+        Args:
+            api_client (APIClient): Cliente da API
+            inquilino_factory (AgenteImobiliarioFactory): Factory de inquilinos
+        """
+
+        inquilino = inquilino_factory()
+        url = self.get_endpoint(inquilino.id)
+
+        response = api_client.get(
+            url,
+            format="json",
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

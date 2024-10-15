@@ -24,7 +24,7 @@ class EstadoFactory(DjangoModelFactory):
 
     class Meta:
         model = Estado
-        django_get_or_create = ("nome", "uf")
+        django_get_or_create = ("uf",)
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
