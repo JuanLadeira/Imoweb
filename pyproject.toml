@@ -149,6 +149,7 @@ ignore = [
   "ISC001", # Checks for uses of isinstance/issubclass that take a tuple
   "COM812", # Checks for uses of isinstance/issubclass that take a tuple
   "PLR6301",
+  "PT023"
           # of types for comparison.
           # Deactivated because it can make the code slow:
           # https://github.com/astral-sh/ruff/issues/7871
