@@ -15,7 +15,7 @@ class TestCreateCidadeEndpoint:
     Agrupa os testes de criação de Cidades
     """
 
-    endpoint = "/api/propriedades/cidades/"
+    endpoint = "/api/imoveis/cidades/"
 
     def test_agente_super_create_cidade(
         self, agente_logado, cidade_factory, estado_factory

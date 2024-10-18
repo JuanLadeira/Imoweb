@@ -14,7 +14,7 @@ class TestCreateTipoDeImoveisEndpoint:
     Agrupa os testes de criação de tipodeimoveiss
     """
 
-    endpoint = "/api/propriedades/tipos-de-imoveis/"
+    endpoint = "/api/imoveis/tipos-de-imoveis/"
 
     def test_agente_super_create_tipodeimoveis(
         self, agente_logado, tipo_de_imovel_factory

@@ -8,7 +8,7 @@ log = getLogger(__name__)
 
 @pytest.mark.django_db()
 class TestDeleteEstadoEndpoint:
-    endpoint = "/api/propriedades/estados/"
+    endpoint = "/api/imoveis/estados/"
 
     @classmethod
     def get_endpoint(cls, estado_id=None):

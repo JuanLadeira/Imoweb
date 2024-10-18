@@ -9,7 +9,7 @@ log = getLogger(__name__)
 
 @pytest.mark.django_db()
 class TestUpdateCidadeEndpoint:
-    endpoint = "/api/propriedades/cidades/"
+    endpoint = "/api/imoveis/cidades/"
 
     @classmethod
     def get_endpoint(cls, cidade_id=None):

@@ -3,14 +3,13 @@ import logging
 import pytest
 from rest_framework.test import APIRequestFactory
 
-from core.users.api.serializers.proprietario_serializer import ProprietarioGetSerializer
-from core.users.api.serializers.proprietario_serializer import (
-    ProprietarioPostSerializer,
+from core.propriedade.api.serializers.tipo_de_imovel_serializer import (
+    TipoDeImovelGetSerializer,
 )
-from core.users.api.serializers.proprietario_serializer import (
-    ProprietarioUpdateSerializer,
+from core.propriedade.api.serializers.tipo_de_imovel_serializer import (
+    TipoDeImovelPostSerializer,
 )
-from core.users.api.views.proprietario_viewset import ProprietarioViewSet
+from core.propriedade.api.views.tipo_imovel_viewset import TipoDeImovelViewSet
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +17,10 @@ logger = logging.getLogger(__name__)
 @pytest.mark.parametrize(
     ("method", "expected_serializer"),
     [
-        ("GET", ProprietarioGetSerializer),
-        ("POST", ProprietarioPostSerializer),
-        ("PUT", ProprietarioUpdateSerializer),
-        ("PATCH", ProprietarioUpdateSerializer),
+        ("GET", TipoDeImovelGetSerializer),
+        ("POST", TipoDeImovelPostSerializer),
+        ("PUT", TipoDeImovelPostSerializer),
+        ("PATCH", TipoDeImovelPostSerializer),
     ],
 )
 def test_get_serializer_class(method, expected_serializer):
@@ -36,7 +35,7 @@ def test_get_serializer_class(method, expected_serializer):
     elif method == "PATCH":
         request = factory.patch("/")
 
-    view = ProprietarioViewSet()
+    view = TipoDeImovelViewSet()
     view.request = request
 
     serializer = view.get_serializer_class()

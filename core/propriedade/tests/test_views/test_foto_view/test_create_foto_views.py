@@ -17,7 +17,7 @@ class TestCreateFotoEndpoint:
     Agrupa os testes de criação de Fotos
     """
 
-    endpoint = "/api/propriedades/fotos/"
+    endpoint = "/api/imoveis/fotos/"
 
     @classmethod
     def create_test_image_file(cls):

@@ -16,7 +16,7 @@ router.register("estados", EstadoViewSet, basename="estados")
 router.register("cidades", CidadeViewSet, basename="cidades")
 router.register("fotos", FotoViewSet, basename="fotos")
 router.register("tipos-de-imoveis", TipoDeImovelViewSet, basename="tipos-de-imoveis")
-router.register("imoveis", ImovelViewSet, basename="imoveis")
+router.register("", ImovelViewSet, basename="imoveis")
 
 
 app_name = "propriedade"

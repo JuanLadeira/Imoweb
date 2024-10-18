@@ -15,7 +15,7 @@ class TestCreateEstadoEndpoint:
     Agrupa os testes de criação de estados
     """
 
-    endpoint = "/api/propriedades/estados/"
+    endpoint = "/api/imoveis/estados/"
 
     def test_agente_super_create_estado(self, agente_logado, estado_factory):
         """

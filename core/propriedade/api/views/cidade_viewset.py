@@ -7,6 +7,7 @@ from core.propriedade.api.serializers.cidade_serializer import CidadePostSeriali
 from core.propriedade.models import Cidade
 
 
+@extend_schema(tags=["Cidades"])
 class CidadeViewSet(CreateUpdateDestroyViewSet):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     serializer_class = CidadePostSerializer
@@ -31,7 +32,9 @@ class CidadeViewSet(CreateUpdateDestroyViewSet):
 
     @extend_schema(
         summary=f"Atualiza um {item_name}",
-        description=f"Este endpoint permite atualizar um {item_name} específico.",
+        description=f"""
+        Este endpoint permite atualizar um {item_name} específico.
+        """,
         request=CidadePostSerializer,
         responses={
             200: CidadePostSerializer,
@@ -57,7 +60,9 @@ class CidadeViewSet(CreateUpdateDestroyViewSet):
 
     @extend_schema(
         summary=f"Exclui um {item_name}",
-        description=f"Este endpoint permite excluir um {item_name} específico.",
+        description=f"""
+        Este endpoint permite excluir um {item_name} específico.
+        """,
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)

@@ -1,5 +1,6 @@
 from django.db import models
 
+from config.abstracts import TimestampedModel
 from core.users.models import Proprietario
 from core.users.models import User
 
@@ -33,7 +34,7 @@ def upload_foto_to(instance, filename):
     return f"imoveis/{instance.imovel.endereco}/{filename}"
 
 
-class Foto(models.Model):
+class Foto(TimestampedModel):
     imovel = models.ForeignKey("Imovel", on_delete=models.CASCADE, related_name="fotos")
     foto = models.ImageField(upload_to=upload_foto_to, null=True, blank=True)
 
@@ -74,7 +75,7 @@ class TipoDeImovel(models.Model):
         return f"{self.nome} - {self.get_tipo_display()}"
 
 
-class Imovel(models.Model):
+class Imovel(TimestampedModel):
     proprietario = models.ForeignKey(
         Proprietario, on_delete=models.CASCADE, related_name="propriedades", null=True
     )

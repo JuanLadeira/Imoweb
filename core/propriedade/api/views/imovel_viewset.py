@@ -8,6 +8,7 @@ from core.propriedade.api.serializers.imovel_serializer import ImovelPostSeriali
 from core.propriedade.models import Imovel
 
 
+@extend_schema(tags=["Imóveis"])
 class ImovelViewSet(viewsets.ModelViewSet):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     queryset = Imovel.objects.all()
@@ -36,7 +37,9 @@ class ImovelViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Recupera um {item_name}",
-        description=f"Este endpoint permite recuperar um {item_name} específico.",
+        description=f"""
+        Este endpoint permite recuperar um {item_name} específico.
+        """,
         responses={
             200: ImovelGetSerializer,
             404: OpenApiResponse(description=f"{item_name} não encontrado"),
@@ -61,7 +64,9 @@ class ImovelViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Atualiza um {item_name}",
-        description=f"Este endpoint permite atualizar um {item_name} específico.",
+        description=f"""
+        Este endpoint permite atualizar um {item_name} específico.
+        """,
         request=ImovelPostSerializer,
         responses={
             200: ImovelPostSerializer,
@@ -87,7 +92,9 @@ class ImovelViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary=f"Exclui um {item_name}",
-        description=f"Este endpoint permite excluir um {item_name} específico.",
+        description=f"""
+        Este endpoint permite excluir um {item_name} específico.
+        """,
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)

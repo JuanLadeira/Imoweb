@@ -36,7 +36,7 @@ INQUILINO_PERMISSIONS = {
 
 PROPRIETARIO_PERMISSIONS = {
     "users.User": ["change_self", "view_self"],  # Permissão para alterar a si mesmo
-    "propriedade.Imovel": ["view", "add", "change", "delete"],
+    "propriedade.Imovel": ["view", "add", "change"],
     "propriedade.Cidade": ["view"],
     "propriedade.Estado": ["view"],
     "propriedade.TipoDeImovel": ["view"],

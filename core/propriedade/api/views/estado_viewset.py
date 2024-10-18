@@ -7,6 +7,7 @@ from core.propriedade.api.serializers.estado_serializer import EstadoPostSeriali
 from core.propriedade.models import Estado
 
 
+@extend_schema(tags=["Estados"])
 class EstadoViewSet(CreateUpdateDestroyViewSet):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     serializer_class = EstadoPostSerializer
@@ -31,7 +32,9 @@ class EstadoViewSet(CreateUpdateDestroyViewSet):
 
     @extend_schema(
         summary=f"Atualiza um {item_name}",
-        description=f"Este endpoint permite atualizar um {item_name} específico.",
+        description=f"""
+        Este endpoint permite atualizar um {item_name} específico.
+        """,
         request=EstadoPostSerializer,
         responses={
             200: EstadoPostSerializer,
@@ -57,7 +60,9 @@ class EstadoViewSet(CreateUpdateDestroyViewSet):
 
     @extend_schema(
         summary=f"Exclui um {item_name}",
-        description=f"Este endpoint permite excluir um {item_name} específico.",
+        description=f"""
+        Este endpoint permite excluir um {item_name} específico.
+        """,
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)

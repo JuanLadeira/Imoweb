@@ -12,6 +12,7 @@ from core.propriedade.api.serializers.tipo_de_imovel_serializer import (
 from core.propriedade.models import TipoDeImovel
 
 
+@extend_schema(tags=["Tipos de Imóveis"])
 class TipoDeImovelViewSet(viewsets.ModelViewSet):
     queryset = TipoDeImovel.objects.all()
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]

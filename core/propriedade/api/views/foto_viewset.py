@@ -7,6 +7,7 @@ from core.propriedade.api.serializers.foto_serializer import FotoPostSerializer
 from core.propriedade.models import Foto
 
 
+@extend_schema(tags=["Fotos"])
 class FotoViewSet(CreateUpdateDestroyViewSet):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     serializer_class = FotoPostSerializer
@@ -31,7 +32,9 @@ class FotoViewSet(CreateUpdateDestroyViewSet):
 
     @extend_schema(
         summary=f"Atualiza uma {item_name}",
-        description=f"Este endpoint permite atualizar uma {item_name} específica.",
+        description=f"""
+        Este endpoint permite atualizar uma {item_name} específica.
+        """,
         request=FotoPostSerializer,
         responses={
             200: FotoPostSerializer,
@@ -57,7 +60,9 @@ class FotoViewSet(CreateUpdateDestroyViewSet):
 
     @extend_schema(
         summary=f"Exclui uma {item_name}",
-        description=f"Este endpoint permite excluir uma {item_name} específica.",
+        description=f"""
+        Este endpoint permite excluir uma {item_name} específica.
+        """,
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)

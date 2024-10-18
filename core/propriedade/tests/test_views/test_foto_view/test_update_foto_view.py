@@ -8,7 +8,7 @@ log = getLogger(__name__)
 
 @pytest.mark.django_db()
 class TestUpdatefotoEndpoint:
-    endpoint = "/api/propriedades/fotos/"
+    endpoint = "/api/imoveis/fotos/"
 
     @classmethod
     def get_endpoint(cls, foto_id=None):
