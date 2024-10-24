@@ -12,7 +12,7 @@ def import_signals():
 
 class UsersConfig(AppConfig):
     name = "core.users"
-    verbose_name = _("Users")
+    verbose_name = _("Gestão de Usuários")
 
     def ready(self):
         import_signals()

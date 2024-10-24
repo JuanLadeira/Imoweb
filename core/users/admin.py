@@ -1,5 +1,6 @@
 from django.contrib import admin
-from guardian.admin import GuardedModelAdmin
+from unfold.admin import ModelAdmin
+from unfold.admin import StackedInline
 
 from core.users.forms.agente_form import AgenteImobiliarioChangeForm
 from core.users.forms.agente_form import AgenteImobiliarioCreationForm
@@ -13,7 +14,7 @@ from core.users.models import Proprietario
 from core.users.models import User
 
 
-class UserInline(admin.StackedInline):
+class UserInline(StackedInline):
     model = User
     fields = [
         "username",
@@ -45,7 +46,7 @@ class UserAtivoFilter(admin.SimpleListFilter):
                 return queryset
 
 
-class BaseUserAdmin(GuardedModelAdmin):
+class BaseUserAdmin(ModelAdmin):
     list_display = (
         "username",
         "tipo",

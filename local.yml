@@ -34,6 +34,7 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
+
   redis:
     image: docker.io/redis:6
     container_name: core_imo_redis
@@ -65,3 +66,14 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../compose/local/frontend/Dockerfile
+    image: core_imo_frontend
+    container_name: core_imo_frontend
+    ports:
+      - '4200:4200'  # Porta 4200 mapeada para a porta 80 do container (porta padrão do Nginx)
+    depends_on:
+      - django
