@@ -78,6 +78,7 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
+    "import_export",
     "crispy_forms",
     "crispy_bootstrap5",
     "rest_framework",
@@ -335,3 +336,8 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
 }
+
+
+from import_export.formats.base_formats import XLSX
+
+EXPORT_FORMATS = [XLSX]

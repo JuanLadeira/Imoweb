@@ -1,7 +1,11 @@
-# Register your models here.
 from django.contrib import admin
+from import_export import fields
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from unfold.admin import ModelAdmin
 from unfold.admin import TabularInline
+from unfold.contrib.import_export.forms import ExportForm
+from unfold.contrib.import_export.forms import ImportForm
 
 from core.propriedade.models import Cidade
 from core.propriedade.models import Estado
@@ -9,6 +13,35 @@ from core.propriedade.models import Foto
 from core.propriedade.models import Imovel
 from core.propriedade.models import Status
 from core.propriedade.models import TipoDeImovel
+
+
+class ImovelResource(resources.ModelResource):
+    status = fields.Field(
+        column_name="status",
+        attribute="status",
+    )
+
+    def dehydrate_status(self, imovel):
+        # Retorna a label do status a partir dos choices definidos
+        return imovel.get_status_display()
+
+    class Meta:
+        model = Imovel
+        import_id_fields = ("id",)
+        fields = (
+            "id",
+            "titulo",
+            "status",
+            "endereco",
+            "valor",
+        )  # Defina as colunas desejadas
+        export_order = (
+            "id",
+            "titulo",
+            "status",
+            "endereco",
+            "valor",
+        )  # Ordem das colunas no CSV
 
 
 @admin.register(Cidade)
@@ -49,7 +82,10 @@ class StatusFilter(admin.SimpleListFilter):
 
 
 @admin.register(Imovel)
-class ImovelAdmin(ModelAdmin):
+class ImovelAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = ImovelResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
     list_display = (
         "titulo",
         "status",
