@@ -67,10 +67,18 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
+    "unfold.contrib.import_export",  # optional, if django-import-export package is used
+    "unfold.contrib.guardian",  # optional, if django-guardian package is used
+    "unfold.contrib.simple_history",  # op
     "django.contrib.admin",
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
+    "import_export",
     "crispy_forms",
     "crispy_bootstrap5",
     "rest_framework",
@@ -85,6 +93,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "core.users",
+    "core.propriedade",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -327,3 +336,8 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
 }
+
+
+from import_export.formats.base_formats import XLSX
+
+EXPORT_FORMATS = [XLSX]

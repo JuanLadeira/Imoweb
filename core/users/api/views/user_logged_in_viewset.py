@@ -9,12 +9,12 @@ from core.users.api.serializers.user_logged_in_serializer import UserLoggedInSer
 
 
 @extend_schema(
-    tags=["User Loggeed in"],
+    tags=["Usuario Autenticado"],
     summary="""
-    Usuario Logado Endpoint.
+    Usuario Autenticado Endpoint.
 """,
     description="""
-    Endpoint que retorna dados do usuario que está logado na aplicação.
+    Endpoint que retorna dados do usuario que está autenticado na aplicação.
 """,
     request=None,
     responses=UserLoggedInSerializer,

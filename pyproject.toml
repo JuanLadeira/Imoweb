@@ -149,6 +149,7 @@ ignore = [
   "ISC001", # Checks for uses of isinstance/issubclass that take a tuple
   "COM812", # Checks for uses of isinstance/issubclass that take a tuple
   "PLR6301",
+  "PT023" # checks for the user of () in decorators
           # of types for comparison.
           # Deactivated because it can make the code slow:
           # https://github.com/astral-sh/ruff/issues/7871
@@ -177,7 +178,7 @@ force-single-line = true
 build = "sudo docker compose -f local.yml up --build"
 migrate = "docker compose -f local.yml run --rm django python manage.py migrate"
 makemigrations = "docker compose -f local.yml run --rm django python manage.py makemigrations"
-up = "task migrate && docker compose -f local.yml up "
+up = "sudo docker compose -f local.yml up "
 down = "docker compose -f local.yml down"
 reset_db = "docker compose -f local.yml run --rm django python manage.py reset_db && docker compose -f local.yml run --rm django python manage.py makemigrations && docker compose -f local.yml up "
 ruff = "docker compose -f local.yml run --rm django ruff check --fix"
@@ -188,3 +189,4 @@ logs = "docker compose -f local.yml logs"
 docs = "docker compose -f docs.yml up --build -d"
 docsl = "docker compose -f docs.yml logs --follow"
 apidocs = "docker compose -f docs.yml run --rm docs make apidocs"
+createsuperuser = "docker compose -f local.yml run --rm django python manage.py shell -c \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@admin.com', 'admin')\""

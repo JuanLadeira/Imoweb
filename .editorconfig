@@ -7,21 +7,25 @@ charset = utf-8
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
 
 [*.{py,rst,ini}]
-indent_style = space
 indent_size = 4
 
 [*.{html,css,scss,json,yml,xml}]
-indent_style = space
 indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
+max_line_length = off
 
 [Makefile]
 indent_style = tab
 
+[*.ts]
+quote_type = single
+ij_typescript_use_double_quotes = false
+
 [default.conf]
-indent_style = space
 indent_size = 2

@@ -49,7 +49,7 @@ class User(AbstractUser):
     foto = models.ImageField(upload_to="fotos/", null=True, blank=True)
 
     def __str__(self):
-        return self.email
+        return self.get_full_name() or self.username
 
     def get_tipo_display_name(self) -> str:
         """
@@ -125,7 +125,7 @@ class Proprietario(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"Proprietario {self.user.__str__()}"
+        return f"{self.user.__str__()}"
 
     @property
     def id(self):
@@ -165,7 +165,7 @@ class AgenteImobiliario(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"Agente {self.user.__str__()}"
+        return f"{self.user.__str__()}"
 
     @property
     def id(self):
@@ -205,7 +205,7 @@ class Inquilino(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"Inquilino {self.user.__str__()}"
+        return f"{self.user.__str__()}"
 
     @property
     def id(self):

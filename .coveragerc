@@ -3,4 +3,7 @@ omit =
     core/templates/*
     core/users/tests/*
     core/users/management/*
+    core/users/migrations/*
     core/contrib/*
+    core/propriedade/tests/*
+    core/propriedade/migrations/*

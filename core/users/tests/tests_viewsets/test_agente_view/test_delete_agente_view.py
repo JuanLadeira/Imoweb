@@ -126,3 +126,24 @@ class TestdeleteAgenteEndpoint:
         )
 
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_anonymous_delete_agentes(self, api_client, agente_imobiliario_factory):
+        """
+        test_anonymous_delete_agentes
+
+        Testa a exclusão de um agente por um usuario anonimo
+
+        Args:
+            api_client (dict): Retorna um client
+            agente_imobiliario_factory (AgenteImobiliarioFactory): Factory de agentes imobiliários
+        """
+
+        agente_imobiliario = agente_imobiliario_factory()
+        url = self.get_endpoint(agente_imobiliario.id)
+
+        response = api_client.delete(
+            url,
+            format="json",
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

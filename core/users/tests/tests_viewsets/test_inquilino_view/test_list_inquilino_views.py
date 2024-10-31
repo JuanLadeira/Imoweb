@@ -94,3 +94,18 @@ class TestListInquilinoEndpoint:
             format="json",
         )
         assert response.status_code == HTTPStatus.OK, response.status_code
+
+    def test_anonymous_user_list_inquilinos(self, api_client):
+        """
+        test_anonymous_user_list_inquilinos
+
+        Testa a listagem de inquilinos por um usuário anônimo
+
+        Args:
+            api_client (APIClient): Instância do APIClient sem autenticação
+        """
+        response = api_client.get(
+            self.endpoint,
+            format="json",
+        )
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

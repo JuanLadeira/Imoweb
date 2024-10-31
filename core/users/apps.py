@@ -4,10 +4,15 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 
+# Import signals only when the app is ready
+def import_signals():
+    with contextlib.suppress(ImportError):
+        import core.users.signals  # noqa: F401
+
+
 class UsersConfig(AppConfig):
     name = "core.users"
-    verbose_name = _("Users")
+    verbose_name = _("Gestão de Usuários")
 
     def ready(self):
-        with contextlib.suppress(ImportError):
-            import core.users.signals  # noqa: F401
+        import_signals()

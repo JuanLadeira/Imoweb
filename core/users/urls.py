@@ -3,7 +3,6 @@ from django.urls import include
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework.routers import SimpleRouter
-from rest_framework.urlpatterns import format_suffix_patterns
 
 from core.users.api.views.agente_imobilario_viewset import AgenteImobiliarioViewSet
 from core.users.api.views.inquilino_viewset import InquilinoViewSet
@@ -23,5 +22,3 @@ urlpatterns = [
     path("", include(router.urls)),
     path("user_logged_in/", user_logged_in_view, name="user_logged_in"),
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)

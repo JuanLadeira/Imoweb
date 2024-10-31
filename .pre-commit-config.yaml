@@ -1,5 +1,5 @@
 exclude: '^docs/|/migrations/|devcontainer.json'
-default_stages: [commit]
+default_stages: [pre-commit]
 
 default_language_version:
   python: python3.12
@@ -36,11 +36,6 @@ repos:
       # Formatter
       - id: ruff-format
 
-  - repo: https://github.com/Riverside-Healthcare/djLint
-    rev: v1.34.1
-    hooks:
-      - id: djlint-reformat-django
-      - id: djlint-django
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:

@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from core.users.api.serializers.permission_serializer import PermissionSerializer
@@ -53,8 +54,10 @@ class UserLoggedInSerializer(serializers.ModelSerializer):
         serializer = PermissionSerializer(view_permissions, many=True)
         return serializer.data
 
+    @extend_schema_field(serializers.CharField)
     def get_nome(self, instance: User) -> str:
         return instance.get_full_name()
 
+    @extend_schema_field(serializers.CharField)
     def get_tipo(self, instance: User) -> str:
         return instance.get_tipo_display_name()

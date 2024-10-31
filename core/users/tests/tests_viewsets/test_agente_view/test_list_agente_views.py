@@ -94,3 +94,19 @@ class TestListAgenteEndpoint:
             format="json",
         )
         assert response.status_code == HTTPStatus.FORBIDDEN, response.status_code
+
+    def test_anonymous_list_agentes(self, api_client):
+        """
+        test_anonymous_list_agentes
+
+        Testa a listagem de agentes por um inquilino
+
+        Args:
+            api_client (ApiClient): retorna um client
+        """
+
+        response = api_client.get(
+            self.endpoint,
+            format="json",
+        )
+        assert response.status_code == HTTPStatus.UNAUTHORIZED, response.status_code

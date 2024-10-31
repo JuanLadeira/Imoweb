@@ -83,3 +83,51 @@ class TestProprietarioPostSerializer:
         assert (
             serializer.data.get("endereco") == proprietario.user.endereco
         ), "deveria ser igual"
+
+    def test_response_data_proprietario_post_serializer(self, user_factory):
+        user = user_factory.build()
+        user = model_to_dict(user)
+
+        data = {
+            "username": user.get("username"),
+            "password": user.get("password"),
+            "password2": user.get("password"),
+            "first_name": user.get("first_name"),
+            "last_name": user.get("last_name"),
+            "telefone": user.get("telefone"),
+            "email": user.get("email"),
+            "endereco": user.get("endereco"),
+        }
+
+        serializer = ProprietarioPostSerializer
+        serializer = serializer(data=data)
+        assert serializer.is_valid(), serializer.errors
+        agente = serializer.save()
+        assert agente, serializer.errors
+        assert agente.user.password != user.get(
+            "password"
+        ), "Senha deveria ter sido criptografada"
+
+    def test_post_to_representation(self, proprietario_factory):
+        proprietario = proprietario_factory()
+
+        serializer = ProprietarioPostSerializer
+        representation = serializer().to_representation(proprietario)
+
+        expected_data = ProprietarioGetSerializer(proprietario).data
+
+        assert (
+            representation == expected_data
+        ), "Representation should match expected data"
+
+    def test_update_to_representation(self, proprietario_factory):
+        proprietario = proprietario_factory()
+
+        serializer = ProprietarioUpdateSerializer
+        representation = serializer().to_representation(proprietario)
+
+        expected_data = ProprietarioGetSerializer(proprietario).data
+
+        assert (
+            representation == expected_data
+        ), "Representation should match expected data"
